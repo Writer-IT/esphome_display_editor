@@ -1,11 +1,24 @@
-import 'package:esphome_display_editor/objects/display_objects.dart';
+import 'package:esphome_display_editor/objects/display_object.dart';
 import 'package:flutter/material.dart';
 
-class Circle implements DisplayObject {
-  Circle(int x, int y, int radius, {bool fill = false}) {
+/// Draws a circle, think that makes sense.
+class Circle extends DisplayObject {
+  /// Creates a circle object that can be drawn on our canvas.
+  /// Starts at position ([x], [y]) with [radius]. Optionally define the 
+  /// [color], default is black. And if the circle should be filled with the 
+  /// color by setting [fill] to true, defaults to false.
+  Circle(
+    int x,
+    int y,
+    int radius, {
+    Color color = Colors.black,
+    bool fill = false,
+  }) {
     center = Offset(x.toDouble(), y.toDouble());
     this.radius = radius.toDouble();
-    filled = fill;
+    paint = Paint()
+      ..color = color
+      ..style = fill ? PaintingStyle.fill : PaintingStyle.stroke;
   }
 
   /// Center of the circle.
@@ -14,6 +27,11 @@ class Circle implements DisplayObject {
   /// Radius of the circle.
   late double radius;
 
-  /// Whether or not to fill the circle.
-  late bool filled;
+  /// Paint style;
+  late Paint paint;
+
+  @override
+  void renderOnCanvas(Canvas canvas) {
+    canvas.drawCircle(center, radius, paint);
+  }
 }
