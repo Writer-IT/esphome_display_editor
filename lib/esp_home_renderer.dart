@@ -19,14 +19,18 @@ class EspHomeRenderer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final parser = YamlParserPass(variables);
-    final displayObjects = parser.parse(code);
+    try {
+      final parser = YamlParserPass(variables);
+      final displayObjects = parser.parse(code);
 
-    // TODO replace width and height with layouts, parse from display type.
-    return SizedBox(
-      width: 400,
-      height: 300,
-      child: CustomPaint(painter: DisplayObjectPainter(displayObjects)),
-    );
+      // TODO replace width and height with layouts, parse from display type.
+      return SizedBox(
+        width: 400,
+        height: 300,
+        child: CustomPaint(painter: DisplayObjectPainter(displayObjects)),
+      );
+    } on FormatException catch (e) {
+      return AlertDialog(content: Text('Uh oh something went wrong $e'));
+    }
   }
 }

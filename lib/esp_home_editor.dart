@@ -1,3 +1,4 @@
+import 'package:esphome_display_editor/esp_home_renderer.dart';
 import 'package:flutter/material.dart';
 
 /// Editor for ESPHome displays.
@@ -44,6 +45,12 @@ class _EspHomeEditorState extends State<EspHomeEditor> {
                     ),
                   ),
                 ],
+              ),
+            ),
+            Expanded(
+              child: EspHomeRenderer(
+                code: textController.text,
+                variables: const [],
               ),
             ),
           ],
