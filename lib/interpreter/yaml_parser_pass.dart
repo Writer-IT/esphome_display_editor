@@ -30,9 +30,8 @@ class YamlParserPass {
       if (displayYaml is YamlMap) {
         display = displayYaml;
       } else if (displayYaml is List) {
-        display = [0] as YamlMap;
+        display = displayYaml[0] as YamlMap;
       }
-
       final parsedDisplayObjects = _displayParserPass
           .parseDisplayCode((display['lambda'] as String).split('\n'));
       return _displayObjectPass.transformObjects(parsedDisplayObjects);

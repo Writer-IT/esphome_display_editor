@@ -41,10 +41,15 @@ class Circle extends DisplayObject {
         );
         radius = double.parse(variables[2] as String);
       }
+      var color = Colors.black;
       if (variables.length == 4) {
-        final color = variables[3] as Color;
-        paint = Paint()..color = color;
+        color = variables[3] as Color;
       }
+      paint = Paint()
+        ..color = color
+        ..style = parsedDisplayObject.filled
+            ? PaintingStyle.fill
+            : PaintingStyle.stroke;
     } else {
       throw FormatException(
         'This is not a circle type, this is a: ${parsedDisplayObject.type}',

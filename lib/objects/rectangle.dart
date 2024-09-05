@@ -47,10 +47,15 @@ class Rectangle implements DisplayObject {
 
         rect = Rect.fromLTWH(x, y, width, height);
       }
+      var color = Colors.black;
       if (variables.length == 5) {
-        final color = variables[4] as Color;
-        paint = Paint()..color = color;
+        color = variables[4] as Color;
       }
+      paint = Paint()
+        ..color = color
+        ..style = parsedDisplayObject.filled
+            ? PaintingStyle.fill
+            : PaintingStyle.stroke;
     } else {
       throw FormatException(
         'This is not a rectangle type, '

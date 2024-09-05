@@ -20,14 +20,11 @@ class Triangle implements DisplayObject {
     Color color = Colors.black,
     bool fill = false,
   }) {
-    vertices = Vertices(
-      VertexMode.triangles,
-      [
-        Offset(x1.toDouble(), y1.toDouble()),
-        Offset(x2.toDouble(), y2.toDouble()),
-        Offset(x3.toDouble(), y3.toDouble()),
-      ],
-    );
+    positions = [
+      Offset(x1.toDouble(), y1.toDouble()),
+      Offset(x2.toDouble(), y2.toDouble()),
+      Offset(x3.toDouble(), y3.toDouble()),
+    ];
     paint = Paint()
       ..color = color
       ..style = fill ? PaintingStyle.fill : PaintingStyle.stroke;
@@ -45,7 +42,7 @@ class Triangle implements DisplayObject {
         );
       }
       if (variables.length >= 6) {
-        vertices = Vertices(VertexMode.triangles, [
+        positions = [
           Offset(
             double.parse(variables[0] as String),
             double.parse(variables[1] as String),
@@ -58,12 +55,17 @@ class Triangle implements DisplayObject {
             double.parse(variables[4] as String),
             double.parse(variables[5] as String),
           ),
-        ]);
+        ];
       }
+      var color = Colors.black;
       if (variables.length == 7) {
-        final color = variables[6] as Color;
-        paint = Paint()..color = color;
+        color = variables[6] as Color;
       }
+      paint = Paint()
+        ..color = color
+        ..style = parsedDisplayObject.filled
+            ? PaintingStyle.fill
+            : PaintingStyle.stroke;
     } else {
       throw FormatException(
         'This is not a triangle, this is a: ${parsedDisplayObject.type}',
@@ -72,13 +74,30 @@ class Triangle implements DisplayObject {
   }
 
   /// Vertices of the triangle.
-  late Vertices vertices;
+  late List<Offset> positions;
 
   /// Color and fill of the triangle.
   late Paint paint;
 
   @override
   void renderOnCanvas(Canvas canvas) {
-    canvas.drawVertices(vertices, BlendMode.srcOver, paint);
+    if (paint.style == PaintingStyle.fill) {
+      canvas.drawVertices(
+        Vertices(VertexMode.triangles, positions),
+        BlendMode.srcOver,
+        paint,
+      );
+    } else {
+      final path = Path()..moveTo(positions[0].dx, positions[0].dy);
+      for (var i = 1; i < positions.length; i++) {
+        path.lineTo(positions[i].dx, positions[i].dy);
+      }
+
+      // Close the path to complete the shape
+      path.close();
+
+      // Draw the path (hollow polygon)
+      canvas.drawPath(path, paint);
+    }
   }
 }

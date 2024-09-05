@@ -31,10 +31,15 @@ class Line extends DisplayObject {
           double.parse(variables[3] as String),
         );
       }
+      var color = Colors.black;
       if (variables.length == 5) {
-        final color = variables[4] as Color;
-        paint = Paint()..color = color;
+        color = variables[4] as Color;
       }
+      paint = Paint()
+        ..color = color
+        ..style = parsedDisplayObject.filled
+            ? PaintingStyle.fill
+            : PaintingStyle.stroke;
     } else {
       throw FormatException(
         'This is not a line, this is a: ${parsedDisplayObject.type}',

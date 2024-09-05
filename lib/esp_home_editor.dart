@@ -11,9 +11,10 @@ class EspHomeEditor extends StatefulWidget {
 }
 
 class _EspHomeEditorState extends State<EspHomeEditor> {
+  String code = '';
   @override
   Widget build(BuildContext context) {
-    final textController = TextEditingController();
+    final textController = TextEditingController(text: code);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -40,7 +41,9 @@ class _EspHomeEditorState extends State<EspHomeEditor> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
                     child: ElevatedButton(
-                      onPressed: () => setState(() {}),
+                      onPressed: () => setState(() {
+                        code = textController.text;
+                      }),
                       child: const Text('Render preview'),
                     ),
                   ),
@@ -49,7 +52,7 @@ class _EspHomeEditorState extends State<EspHomeEditor> {
             ),
             Expanded(
               child: EspHomeRenderer(
-                code: textController.text,
+                code: code,
                 variables: const [],
               ),
             ),

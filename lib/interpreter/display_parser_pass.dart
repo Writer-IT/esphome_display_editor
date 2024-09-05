@@ -25,6 +25,7 @@ class DisplayParserPass {
       // Some shenanigans for easily determining if we have to fill or not.
       final filled = codeLine.contains('filled');
       codeLine = codeLine.replaceAll('filled_', '')..trim();
+      print('gotta fill? $filled');
 
       switch (codeLine) {
         case final circle when circle.startsWith(_circleSignature):
