@@ -1,4 +1,4 @@
-import 'package:esphome_display_editor/interpreter/unparsed_display_object.dart';
+import 'package:esphome_display_editor/interpreter/parsed_display_object.dart';
 import 'package:esphome_display_editor/objects/display_object.dart';
 import 'package:esphome_display_editor/objects/display_object_types.dart';
 import 'package:flutter/material.dart';
@@ -23,12 +23,12 @@ class Circle extends DisplayObject {
       ..style = fill ? PaintingStyle.fill : PaintingStyle.stroke;
   }
 
-  /// Converts an [UnparsedDisplayObject] to a [Circle].
-  Circle.fromUnparsedDisplayObject(
-    UnparsedDisplayObject unparsedDisplayObject,
+  /// Converts an [ParsedDisplayObject] to a [Circle].
+  Circle.fromParsedDisplayObject(
+    ParsedDisplayObject parsedDisplayObject,
   ) {
-    if (unparsedDisplayObject.type == DisplayObjectTypes.circle) {
-      final variables = unparsedDisplayObject.variables;
+    if (parsedDisplayObject.type == DisplayObjectTypes.circle) {
+      final variables = parsedDisplayObject.variables;
       if (variables.length < 2 || variables.length > 4) {
         throw FormatException(
           'Circle requires 3 or 4 variables, provided: ${variables.length}',
@@ -45,6 +45,10 @@ class Circle extends DisplayObject {
         final color = variables[3] as Color;
         paint = Paint()..color = color;
       }
+    } else {
+      throw FormatException(
+        'This is not a circle type, this is a: ${parsedDisplayObject.type}',
+      );
     }
   }
 
