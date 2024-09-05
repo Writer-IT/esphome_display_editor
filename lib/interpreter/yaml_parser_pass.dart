@@ -1,5 +1,5 @@
+import 'package:esphome_display_editor/interpreter/display_object_pass.dart';
 import 'package:esphome_display_editor/interpreter/display_parser_pass.dart';
-import 'package:esphome_display_editor/interpreter/render_object_pass.dart';
 import 'package:esphome_display_editor/objects/display_object.dart';
 import 'package:yaml/yaml.dart';
 

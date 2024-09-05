@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+/// Editor for ESPHome displays.
 class EspHomeEditor extends StatefulWidget {
+  /// Instantiate the editor.
   const EspHomeEditor({super.key});
 
   @override
