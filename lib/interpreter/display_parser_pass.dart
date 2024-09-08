@@ -1,3 +1,4 @@
+import 'package:esphome_display_editor/interpreter/interpreter_utilities.dart';
 import 'package:esphome_display_editor/interpreter/parsed_display_object.dart';
 import 'package:esphome_display_editor/objects/display_object_types.dart';
 
@@ -17,10 +18,6 @@ class DisplayParserPass {
 
     for (var codeLine in codeLines) {
       // Clean up a potential comment in the line.
-      final commentIndex = codeLine.indexOf('//');
-      if (commentIndex >= 0) {
-        codeLine = codeLine.replaceRange(commentIndex, codeLine.length, '');
-      }
 
       // Some shenanigans for easily determining if we have to fill or not.
       final filled = codeLine.contains('filled');
@@ -74,11 +71,4 @@ class DisplayParserPass {
     return result;
   }
 
-  /// Parse variabales with the given signature.
-  List<String> parseVariables(String codeLine, String signature) => codeLine
-      .replaceRange(codeLine.length - 2, codeLine.length, '')
-      .replaceRange(0, signature.length, '')
-      .split(',')
-      .map((variable) => variable.trim())
-      .toList();
 }
