@@ -11,9 +11,26 @@ String cleanCodeLine(String code) {
 }
 
 /// Parse variables with the given signature.
-List<String> parseVariables(String codeLine, String signature) => codeLine
-    .replaceRange(codeLine.length - 2, codeLine.length, '')
-    .replaceRange(0, signature.length, '')
-    .split(',')
-    .map((variable) => variable.trim())
-    .toList();
+List<Object> parseVariables({
+  required String codeLine,
+  required String signature,
+  Map<String, Object> variableToObjectMapping = const {},
+}) {
+  final rawVariables = codeLine
+      .replaceRange(codeLine.length - 2, codeLine.length, '')
+      .replaceRange(0, signature.length, '')
+      .split(',')
+      .map((variable) => variable.trim())
+      .toList();
+
+  final variables = <Object>[];
+  for (final rawVariable in rawVariables) {
+    if (variableToObjectMapping.keys.contains(rawVariable)) {
+      variables.add(variableToObjectMapping[rawVariable]!);
+    } else {
+      variables.add(rawVariable);
+    }
+  }
+
+  return variables;
+}

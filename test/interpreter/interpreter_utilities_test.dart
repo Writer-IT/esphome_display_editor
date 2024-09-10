@@ -25,7 +25,8 @@ void main() {
     });
     test('Check if white space and comments are dropped correctly', () {
       // Arrange
-      const code = '   it.circle(20, 75, 10);      // An amazing comment in C++    ';
+      const code =
+          '   it.circle(20, 75, 10);      // An amazing comment in C++    ';
       const expected = 'it.circle(20, 75, 10);';
       // Act
       final result = cleanCodeLine(code);
@@ -41,7 +42,8 @@ void main() {
       const signature = 'it.circle(';
 
       // Act
-      final result = parseVariables(exampleCode, signature);
+      final result =
+          parseVariables(codeLine: exampleCode, signature: signature);
 
       // Assert
       expect(result.length, 3);

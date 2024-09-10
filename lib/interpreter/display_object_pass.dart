@@ -13,7 +13,7 @@ class DisplayObjectPass {
 
   /// What objects we will have to render and transform into a
   /// [DisplayObject].
-  final List<(String, Object)>? variables;
+  final Map<String, Object> variables;
 
   /// Transforms [ParsedDisplayObject]s into [DisplayObject]s.
   List<DisplayObject> transformObjects(

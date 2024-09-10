@@ -25,7 +25,8 @@ class DisplayParserPass {
 
       switch (codeLine) {
         case final circle when circle.startsWith(_circleSignature):
-          final variables = parseVariables(circle, _circleSignature);
+          final variables =
+              parseVariables(codeLine: circle, signature: _circleSignature);
           result.add(
             ParsedDisplayObject(
               DisplayObjectTypes.circle,
@@ -35,7 +36,8 @@ class DisplayParserPass {
           );
 
         case final line when line.startsWith(_lineSignature):
-          final variables = parseVariables(line, _lineSignature);
+          final variables =
+              parseVariables(codeLine: line, signature: _lineSignature);
           result.add(
             ParsedDisplayObject(
               DisplayObjectTypes.line,
@@ -45,7 +47,10 @@ class DisplayParserPass {
           );
 
         case final rectangle when rectangle.startsWith(_rectangleSignature):
-          final variables = parseVariables(rectangle, _rectangleSignature);
+          final variables = parseVariables(
+            codeLine: rectangle,
+            signature: _rectangleSignature,
+          );
           result.add(
             ParsedDisplayObject(
               DisplayObjectTypes.rectangle,
@@ -55,7 +60,8 @@ class DisplayParserPass {
           );
 
         case final triangle when triangle.startsWith(_triangleSignature):
-          final variables = parseVariables(triangle, _triangleSignature);
+          final variables =
+              parseVariables(codeLine: triangle, signature: _triangleSignature);
           result.add(
             ParsedDisplayObject(
               DisplayObjectTypes.triangle,
@@ -70,5 +76,4 @@ class DisplayParserPass {
     }
     return result;
   }
-
 }

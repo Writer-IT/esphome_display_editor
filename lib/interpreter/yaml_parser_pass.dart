@@ -14,7 +14,7 @@ class YamlParserPass {
   }
 
   /// Variables that can be changed by the user.
-  final List<(String, Object)> variables;
+  final Map<String, Object> variables;
 
   late DisplayParserPass _displayParserPass;
 
