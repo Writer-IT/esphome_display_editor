@@ -1,5 +1,6 @@
 import 'package:esphome_display_editor/interpreter/display_object_pass.dart';
 import 'package:esphome_display_editor/interpreter/display_parser_pass.dart';
+import 'package:esphome_display_editor/interpreter/variable_pass.dart';
 import 'package:esphome_display_editor/objects/display_object.dart';
 import 'package:yaml/yaml.dart';
 
@@ -8,17 +9,7 @@ import 'package:yaml/yaml.dart';
 /// the render object pass.
 class YamlParserPass {
   /// First parser pass, splits out the yaml and delegates parsing passes.
-  YamlParserPass(this.variables) {
-    _displayParserPass = DisplayParserPass();
-    _displayObjectPass = DisplayObjectPass(variables);
-  }
-
-  /// Variables that can be changed by the user.
-  final Map<String, Object> variables;
-
-  late DisplayParserPass _displayParserPass;
-
-  late DisplayObjectPass _displayObjectPass;
+  YamlParserPass();
 
   /// Parses the code given in [input].
   List<DisplayObject> parse(String input) {
@@ -32,9 +23,20 @@ class YamlParserPass {
       } else if (displayYaml is List) {
         display = displayYaml[0] as YamlMap;
       }
-      final parsedDisplayObjects = _displayParserPass
-          .parseDisplayCode((display['lambda'] as String).split('\n'));
-      return _displayObjectPass.transformObjects(parsedDisplayObjects);
+      final codeLines = (display['lambda'] as String).split('\n');
+
+      final variablePass = VariablePass();
+
+      final (variableToObjectMapping, passedCodeLines) =
+          variablePass.processDisplayCode(codeLines);
+
+      final displayParserPass = DisplayParserPass(variableToObjectMapping);
+
+      final displayObjectPass = DisplayObjectPass();
+
+      final parsedDisplayObjects =
+          displayParserPass.parseDisplayCode(passedCodeLines);
+      return displayObjectPass.transformObjects(parsedDisplayObjects);
     } else {
       throw const FormatException('This was not valid yaml');
     }

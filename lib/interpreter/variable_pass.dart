@@ -45,6 +45,8 @@ class VariablePass {
           fixedCodeLines.add(replaceVariables(codeLine));
       }
     }
+    print('fixedCodeLines: $fixedCodeLines');
+    print('variableValueMapping: $variableValueMapping');
     return (variableValueMapping, fixedCodeLines);
   }
 
@@ -57,10 +59,10 @@ class VariablePass {
     for (final variable in variableNameMapping.keys) {
       // Make sure we match the exact variable name, so no issue with 'person'
       // and 'person_1'.
-      final exactVariable = ' $variable ';
-      if (result.contains(exactVariable)) {
+      final variablePattern = RegExp(r'\b' + RegExp.escape(variable) + r'\b');
+      if (result.contains(variablePattern)) {
         result =
-            result.replaceAll(exactVariable, variableNameMapping[variable]!);
+            result.replaceAll(variablePattern, variableNameMapping[variable]!);
       }
     }
     return result;
@@ -136,7 +138,7 @@ class VariablePass {
       case VariableTypes.double:
         valueObject = double.parse(valueString.replaceAll(';', ''));
       case VariableTypes.string:
-      // TODO this is relatively naive, we only handle str a = "something";
+        // TODO this is relatively naive, we only handle str a = "something";
         valueObject =
             valueString.replaceAll('";', '').replaceFirst('"', '').trim();
       case VariableTypes.color:

@@ -5,7 +5,10 @@ import 'package:esphome_display_editor/objects/display_object_types.dart';
 /// Converts the strings of a display section to [ParsedDisplayObject]s.
 class DisplayParserPass {
   /// Instantiate the parser for display sections.
-  DisplayParserPass();
+  DisplayParserPass(this.variableToObjectMapping);
+
+  /// The variable mapping.
+  final Map<String, Object> variableToObjectMapping;
 
   static const _circleSignature = 'it.circle(';
   static const _lineSignature = 'it.line(';
@@ -25,8 +28,12 @@ class DisplayParserPass {
 
       switch (codeLine) {
         case final circle when circle.startsWith(_circleSignature):
-          final variables =
-              parseVariables(codeLine: circle, signature: _circleSignature);
+          final variables = parseVariables(
+            codeLine: circle,
+            signature: _circleSignature,
+            variableToObjectMapping: variableToObjectMapping,
+          );
+          print(variables);
           result.add(
             ParsedDisplayObject(
               DisplayObjectTypes.circle,
@@ -36,8 +43,11 @@ class DisplayParserPass {
           );
 
         case final line when line.startsWith(_lineSignature):
-          final variables =
-              parseVariables(codeLine: line, signature: _lineSignature);
+          final variables = parseVariables(
+            codeLine: line,
+            signature: _lineSignature,
+            variableToObjectMapping: variableToObjectMapping,
+          );
           result.add(
             ParsedDisplayObject(
               DisplayObjectTypes.line,
@@ -50,6 +60,7 @@ class DisplayParserPass {
           final variables = parseVariables(
             codeLine: rectangle,
             signature: _rectangleSignature,
+            variableToObjectMapping: variableToObjectMapping,
           );
           result.add(
             ParsedDisplayObject(
@@ -60,8 +71,11 @@ class DisplayParserPass {
           );
 
         case final triangle when triangle.startsWith(_triangleSignature):
-          final variables =
-              parseVariables(codeLine: triangle, signature: _triangleSignature);
+          final variables = parseVariables(
+            codeLine: triangle,
+            signature: _triangleSignature,
+            variableToObjectMapping: variableToObjectMapping,
+          );
           result.add(
             ParsedDisplayObject(
               DisplayObjectTypes.triangle,

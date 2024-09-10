@@ -20,7 +20,7 @@ class EspHomeRenderer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     try {
-      final parser = YamlParserPass(variables);
+      final parser = YamlParserPass();
       final displayObjects = parser.parse(code);
 
       // TODO replace width and height with layouts, parse from display type.

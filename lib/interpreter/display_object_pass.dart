@@ -9,11 +9,7 @@ import 'package:esphome_display_editor/objects/triangle.dart';
 /// Transforms all render calls to render objects.
 class DisplayObjectPass {
   /// Will transforms [ParsedDisplayObject]s to [DisplayObject]s.
-  DisplayObjectPass(this.variables);
-
-  /// What objects we will have to render and transform into a
-  /// [DisplayObject].
-  final Map<String, Object> variables;
+  DisplayObjectPass();
 
   /// Transforms [ParsedDisplayObject]s into [DisplayObject]s.
   List<DisplayObject> transformObjects(

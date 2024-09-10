@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:esphome_display_editor/interpreter/interpreter_utilities.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -35,6 +37,7 @@ void main() {
       expect(result, expected);
     });
   });
+
   group('Testing parseVariables method', () {
     test('Check with valid code line with variables', () {
       // Arrange
@@ -50,6 +53,28 @@ void main() {
       expect(result[0], '20');
       expect(result[1], '75');
       expect(result[2], '10');
+    });
+
+    test('Check with valid code line with variables to replace', () {
+      // Arrange
+      const exampleCode = 'it.circle(1002, 45, 20, black);';
+      const signature = 'it.circle(';
+      const expectedVariableValue = Color.fromRGBO(0, 0, 0, 1);
+      const variableToObjectMapping = {'black': expectedVariableValue};
+
+      // Act
+      final result = parseVariables(
+        codeLine: exampleCode,
+        signature: signature,
+        variableToObjectMapping: variableToObjectMapping,
+      );
+
+      // Assert
+      expect(result.length, 4);
+      expect(result[0], '1002');
+      expect(result[1], '45');
+      expect(result[2], '20');
+      expect(result[3], expectedVariableValue);
     });
   });
 }
