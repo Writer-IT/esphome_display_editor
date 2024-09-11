@@ -1,3 +1,4 @@
+import 'package:esphome_display_editor/interpreter/interpreter_utilities.dart';
 import 'package:esphome_display_editor/interpreter/parsed_display_object.dart';
 import 'package:esphome_display_editor/objects/display_object.dart';
 import 'package:esphome_display_editor/objects/display_object_types.dart';
@@ -13,6 +14,7 @@ class Line extends DisplayObject {
   /// Converts an [ParsedDisplayObject] to a [Line].
   Line.fromParsedDisplayObject(
     ParsedDisplayObject parsedDisplayObject,
+    Map<String, Object> variableToObjectMapping,
   ) {
     if (parsedDisplayObject.type == DisplayObjectTypes.line) {
       final variables = parsedDisplayObject.variables;
@@ -23,12 +25,24 @@ class Line extends DisplayObject {
       }
       if (variables.length >= 4) {
         p1 = Offset(
-          double.parse(variables[0] as String),
-          double.parse(variables[1] as String),
+          evaluateNumberExpression(
+            variables[0] as String,
+            variableToObjectMapping,
+          ),
+          evaluateNumberExpression(
+            variables[1] as String,
+            variableToObjectMapping,
+          ),
         );
         p2 = Offset(
-          double.parse(variables[2] as String),
-          double.parse(variables[3] as String),
+          evaluateNumberExpression(
+            variables[2] as String,
+            variableToObjectMapping,
+          ),
+          evaluateNumberExpression(
+            variables[3] as String,
+            variableToObjectMapping,
+          ),
         );
       }
       var color = Colors.black;

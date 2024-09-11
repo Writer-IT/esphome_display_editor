@@ -33,7 +33,6 @@ class DisplayParserPass {
             signature: _circleSignature,
             variableToObjectMapping: variableToObjectMapping,
           );
-          print(variables);
           result.add(
             ParsedDisplayObject(
               DisplayObjectTypes.circle,

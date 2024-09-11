@@ -31,7 +31,7 @@ class _EspHomeEditorState extends State<EspHomeEditor> {
                     child: TextField(
                       controller: textController,
                       keyboardType: TextInputType.multiline,
-                      maxLines: null,
+                      maxLines: 40,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         hintText: 'Your display lambda',

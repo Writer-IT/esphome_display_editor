@@ -1,3 +1,4 @@
+import 'package:esphome_display_editor/interpreter/interpreter_utilities.dart';
 import 'package:esphome_display_editor/interpreter/parsed_display_object.dart';
 import 'package:esphome_display_editor/objects/display_object.dart';
 import 'package:esphome_display_editor/objects/display_object_types.dart';
@@ -31,6 +32,7 @@ class Rectangle implements DisplayObject {
   /// Converts an [ParsedDisplayObject] to a [Rectangle].
   Rectangle.fromParsedDisplayObject(
     ParsedDisplayObject parsedDisplayObject,
+    Map<String, Object> variableToObjectMapping,
   ) {
     if (parsedDisplayObject.type == DisplayObjectTypes.rectangle) {
       final variables = parsedDisplayObject.variables;
@@ -40,10 +42,22 @@ class Rectangle implements DisplayObject {
         );
       }
       if (variables.length >= 4) {
-        final x = double.parse(variables[0] as String);
-        final y = double.parse(variables[1] as String);
-        final width = double.parse(variables[2] as String);
-        final height = double.parse(variables[3] as String);
+        final x = evaluateNumberExpression(
+          variables[0].toString(),
+          variableToObjectMapping,
+        );
+        final y = evaluateNumberExpression(
+          variables[1].toString(),
+          variableToObjectMapping,
+        );
+        final width = evaluateNumberExpression(
+          variables[2].toString(),
+          variableToObjectMapping,
+        );
+        final height = evaluateNumberExpression(
+          variables[3].toString(),
+          variableToObjectMapping,
+        );
 
         rect = Rect.fromLTWH(x, y, width, height);
       }

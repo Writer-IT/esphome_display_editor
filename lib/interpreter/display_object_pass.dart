@@ -14,6 +14,7 @@ class DisplayObjectPass {
   /// Transforms [ParsedDisplayObject]s into [DisplayObject]s.
   List<DisplayObject> transformObjects(
     List<ParsedDisplayObject> parsedDisplayObjects,
+    Map<String, Object> variableToObjectMapping,
   ) {
     final result = <DisplayObject>[];
     for (final parsedDisplayObject in parsedDisplayObjects) {
@@ -21,10 +22,19 @@ class DisplayObjectPass {
         case DisplayObjectTypes.circle:
           result.add(Circle.fromParsedDisplayObject(parsedDisplayObject));
         case DisplayObjectTypes.line:
-          result.add(Line.fromParsedDisplayObject(parsedDisplayObject));
+          result.add(
+            Line.fromParsedDisplayObject(
+              parsedDisplayObject,
+              variableToObjectMapping,
+            ),
+          );
         case DisplayObjectTypes.rectangle:
-          result
-              .add(Rectangle.fromParsedDisplayObject(parsedDisplayObject));
+          result.add(
+            Rectangle.fromParsedDisplayObject(
+              parsedDisplayObject,
+              variableToObjectMapping,
+            ),
+          );
         case DisplayObjectTypes.triangle:
           result.add(Triangle.fromParsedDisplayObject(parsedDisplayObject));
       }

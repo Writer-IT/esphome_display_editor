@@ -36,7 +36,10 @@ class YamlParserPass {
 
       final parsedDisplayObjects =
           displayParserPass.parseDisplayCode(passedCodeLines);
-      return displayObjectPass.transformObjects(parsedDisplayObjects);
+      return displayObjectPass.transformObjects(
+        parsedDisplayObjects,
+        variableToObjectMapping,
+      );
     } else {
       throw const FormatException('This was not valid yaml');
     }

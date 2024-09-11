@@ -45,8 +45,6 @@ class VariablePass {
           fixedCodeLines.add(replaceVariables(codeLine));
       }
     }
-    print('fixedCodeLines: $fixedCodeLines');
-    print('variableValueMapping: $variableValueMapping');
     return (variableValueMapping, fixedCodeLines);
   }
 
