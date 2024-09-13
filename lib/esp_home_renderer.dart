@@ -29,7 +29,7 @@ class EspHomeRenderer extends StatelessWidget {
         height: 300,
         child: CustomPaint(painter: DisplayObjectPainter(displayObjects)),
       );
-    // ignore: avoid_catches_without_on_clauses
+      // ignore: avoid_catches_without_on_clauses
     } catch (e) {
       return AlertDialog(content: Text('Uh oh something went wrong $e'));
     }

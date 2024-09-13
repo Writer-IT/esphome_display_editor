@@ -104,3 +104,25 @@ double evaluateNumberExpression(
 
   return evaluationStack.removeLast();
 }
+
+/// Checks if a line is a variable reassignment and returns the type.
+(bool, Type?) isVariableReassignment(
+  String codeLine,
+  Map<String, Object> variableToObjectMapping,
+) {
+  if (codeLine.contains('=')) {
+    final assignmentSplit = codeLine.split('=');
+    final variablePart = assignmentSplit[0].trim().split(' ');
+    if (variablePart.length == 1) {
+      final variableName = variablePart[0];
+      if (variableToObjectMapping.containsKey(variableName)) {
+        return (true, variableToObjectMapping[variableName].runtimeType);
+      } else {
+        throw StateError('$variableName was not previously instantiated '
+            'as expected, please add a type to properly initialize this '
+            'variable.');
+      }
+    }
+  }
+  return (false, null);
+}

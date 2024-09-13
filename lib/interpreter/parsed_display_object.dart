@@ -2,7 +2,7 @@ import 'package:esphome_display_editor/objects/display_object_types.dart';
 
 /// Mark a line of code to be treated as a render object.
 class ParsedDisplayObject {
-  /// We know we will have to render this object, it has a [type] and the 
+  /// We know we will have to render this object, it has a [type] and the
   /// associated [variables].
   ParsedDisplayObject(this.type, this.variables, this.filled);
 

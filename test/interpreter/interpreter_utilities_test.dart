@@ -77,4 +77,39 @@ void main() {
       expect(result[3], expectedVariableValue);
     });
   });
+
+  group('Testing isVariableReassignment method', () {
+    test('Test with a normal variable reassignment', () {
+      // Arrange
+      const exampleCode = 'color = Color(200, 233, 233);';
+      final existingVariableToObjectMapping = {
+        'color': const Color.fromRGBO(120, 20, 20, 1),
+      };
+      const expected = (true, Color);
+
+      // Act
+      final result =
+          isVariableReassignment(exampleCode, existingVariableToObjectMapping);
+
+      // Assert
+      expect(result, expected);
+    });
+
+    test('Test with a uninitalized variable reassignment', () {
+      // Arrange
+      const exampleCode = 'color = Color(200, 233, 233);';
+      final existingVariableToObjectMapping = {
+        'some_color': const Color.fromRGBO(120, 20, 20, 1),
+      };
+
+      // Act & Assert
+      expect(
+        () => isVariableReassignment(
+          exampleCode,
+          existingVariableToObjectMapping,
+        ),
+        throwsA(isA<StateError>()),
+      );
+    });
+  });
 }

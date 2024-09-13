@@ -3,10 +3,10 @@ import 'package:flutter/rendering.dart';
 
 /// Painter that can paint the given display objects.
 class DisplayObjectPainter extends CustomPainter {
-    /// Initializes the painter.
+  /// Initializes the painter.
   DisplayObjectPainter(this.displayObjects);
 
-/// The objects that should be painted.
+  /// The objects that should be painted.
   final List<DisplayObject> displayObjects;
 
   @override
