@@ -32,8 +32,7 @@ void main() {
                     ''');
 
       // Act
-      final result =
-          YamlParserPass.verifyDisplayComponent(exampleYaml as YamlMap);
+      final result = verifyDisplayComponent(exampleYaml as YamlMap);
 
       // Assert
       expect(result, true);

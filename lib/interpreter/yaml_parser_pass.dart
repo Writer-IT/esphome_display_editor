@@ -1,5 +1,6 @@
 import 'package:esphome_display_editor/interpreter/display_object_pass.dart';
 import 'package:esphome_display_editor/interpreter/display_parser_pass.dart';
+import 'package:esphome_display_editor/interpreter/font_pass.dart';
 import 'package:esphome_display_editor/interpreter/variable_pass.dart';
 import 'package:esphome_display_editor/objects/display_object.dart';
 import 'package:yaml/yaml.dart';
@@ -9,16 +10,21 @@ import 'package:yaml/yaml.dart';
 /// the render object pass.
 
 /// Parses the code given in [input].
-List<DisplayObject> parse(String input) {
+List<DisplayObject> parseYaml(String input) {
   final yaml = loadYaml(input);
   if (verifyDisplayComponent(yaml as YamlMap)) {
     final codeLines = extractCode(yaml);
 
+    // Extract potential fonts from the yaml
+    final variableToTextStyleMapping = parseFontVariables(yaml);
+
+    // Extract variables from code
     final (variableToObjectMapping, passedCodeLines) =
         VariablePass().processDisplayCode(codeLines);
 
-    final parsedDisplayObjects = DisplayParserPass(variableToObjectMapping)
-        .parseDisplayCode(passedCodeLines);
+    final parsedDisplayObjects = DisplayParserPass(
+      {...variableToObjectMapping, ...variableToTextStyleMapping},
+    ).parseDisplayCode(passedCodeLines);
 
     return DisplayObjectPass().transformObjects(
       parsedDisplayObjects,

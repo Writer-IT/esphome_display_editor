@@ -37,6 +37,10 @@ class DisplayObjectPass {
           );
         case DisplayObjectTypes.triangle:
           result.add(Triangle.fromParsedDisplayObject(parsedDisplayObject));
+        case DisplayObjectTypes.print:
+          throw UnimplementedError();
+        case DisplayObjectTypes.printf:
+          throw UnimplementedError();
       }
     }
     return result;
