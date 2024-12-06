@@ -3,6 +3,7 @@ import 'package:esphome_display_editor/objects/circle.dart';
 import 'package:esphome_display_editor/objects/display_object.dart';
 import 'package:esphome_display_editor/objects/display_object_types.dart';
 import 'package:esphome_display_editor/objects/line.dart';
+import 'package:esphome_display_editor/objects/print.dart';
 import 'package:esphome_display_editor/objects/rectangle.dart';
 import 'package:esphome_display_editor/objects/triangle.dart';
 
@@ -38,7 +39,7 @@ class DisplayObjectPass {
         case DisplayObjectTypes.triangle:
           result.add(Triangle.fromParsedDisplayObject(parsedDisplayObject));
         case DisplayObjectTypes.print:
-          throw UnimplementedError();
+          result.add(Print.fromParsedDisplayObject(parsedDisplayObject));
         case DisplayObjectTypes.printf:
           throw UnimplementedError();
       }

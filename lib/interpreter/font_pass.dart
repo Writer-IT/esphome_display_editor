@@ -9,7 +9,7 @@ Map<String, TextStyle> parseFontVariables(YamlMap input) {
   if (input.containsKey('font')) {
     final fontSection = input['font'] as YamlList;
     for (final font in fontSection) {
-      variableToTextStyleMapping[font['id'] as String] =
+      variableToTextStyleMapping['id(${font['id'] as String})'] =
           TextStyle(fontSize: (font['size'] as int).toDouble());
     }
   }

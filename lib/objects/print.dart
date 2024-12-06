@@ -1,4 +1,6 @@
+import 'package:esphome_display_editor/interpreter/parsed_display_object.dart';
 import 'package:esphome_display_editor/objects/display_object.dart';
+import 'package:esphome_display_editor/objects/display_object_types.dart';
 import 'package:flutter/material.dart';
 
 /// Text to be drawn.
@@ -17,6 +19,39 @@ class Print extends DisplayObject {
     }
     if (backgroundColor != null) {
       font = font.copyWith(backgroundColor: backgroundColor);
+    }
+  }
+
+  /// Converts a [ParsedDisplayObject] to a [Print].
+  Print.fromParsedDisplayObject(ParsedDisplayObject parsedDisplayObject) {
+    if (parsedDisplayObject.type == DisplayObjectTypes.print) {
+      final variables = parsedDisplayObject.variables;
+      if (variables.length < 4 || variables.length > 7) {
+        throw FormatException(
+          'Print requires 4 to 7 variables, provided: ${variables.length}',
+        );
+      } else {
+        p1 = Offset(
+          double.parse(variables[0] as String),
+          double.parse(variables[1] as String),
+        );
+        font = variables[2] as TextStyle;
+        switch (variables.length) {
+          case 4:
+            text = variables[3] as String;
+            textAlign = TextAlign.left;
+          case 5:
+            text = variables[4] as String;
+          case 6:
+            text = variables[4] as String;
+          case 7:
+            text = variables[5] as String;
+        }
+      }
+    } else {
+      throw FormatException(
+        'This is not a print statement, this is a: ${parsedDisplayObject.type}',
+      );
     }
   }
 
@@ -43,6 +78,8 @@ class Print extends DisplayObject {
       text: textSpan,
       textDirection: TextDirection.ltr,
       textAlign: textAlign ??= TextAlign.start,
-    ).paint(canvas, p1);
+    )
+      ..layout()
+      ..paint(canvas, p1);
   }
 }
