@@ -112,4 +112,26 @@ void main() {
       );
     });
   });
+
+  group('Testing parseTextAlign method', () {
+    test('Testing parse text align basic', () {
+      // Arrange
+      const input = 'TextAlign::TOP_RIGHT';
+      const expected = TextAlign.right;
+
+      // Act
+      final result = parseTextAlign(input);
+
+      // Assert
+      expect(result, expected);
+    });
+
+    test('Testing parse text align with invalid input', () {
+      // Arrange
+      const input = 'Some_text';
+
+      // Act & Assert
+      expect(() => parseTextAlign(input), throwsA(isA<FormatException>()));
+    });
+  });
 }

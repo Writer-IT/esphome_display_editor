@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'dart:ui';
 
 /// Cleans the code line of empty space and drops comments.
 String cleanCodeLine(String code) {
@@ -125,4 +126,23 @@ double evaluateNumberExpression(
     }
   }
   return (false, null);
+}
+
+/// Parses a textAlign variable to a [TextAlign] enum.
+TextAlign parseTextAlign(String textAlignString) {
+  const textAlignPrefix = 'TextAlign::';
+  if (textAlignString.startsWith(textAlignPrefix)) {
+    final alignEnum = textAlignString.replaceFirst(textAlignPrefix, '');
+    if (alignEnum.contains('RIGHT')) {
+      return TextAlign.right;
+    }
+    if (alignEnum.contains('LEFT')) {
+      return TextAlign.left;
+    }
+    if (alignEnum.contains('CENTER')) {
+      return TextAlign.center;
+    }
+    return TextAlign.left;
+  }
+  throw FormatException('This is not a correct TextAlign: $textAlignString');
 }

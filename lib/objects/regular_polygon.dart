@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 /// Regular Polygon with a center, offset angle, size and amount of edges.
 class RegularPolygon implements DisplayObject {
+  /// Constructor for a [RegularPolygon], takes the following:
+  /// - [p1]
   RegularPolygon({
     required this.p1,
     required this.radius,

@@ -1,3 +1,4 @@
+import 'package:esphome_display_editor/interpreter/interpreter_utilities.dart';
 import 'package:esphome_display_editor/interpreter/parsed_display_object.dart';
 import 'package:esphome_display_editor/objects/display_object.dart';
 import 'package:esphome_display_editor/objects/display_object_types.dart';
@@ -38,13 +39,16 @@ class Print extends DisplayObject {
         font = variables[2] as TextStyle;
         switch (variables.length) {
           case 4:
-            text = variables[3] as String;
             textAlign = TextAlign.left;
+            text = variables[3] as String;
           case 5:
+            textAlign = parseTextAlign(variables[3] as String);
             text = variables[4] as String;
           case 6:
+            textAlign = TextAlign.left;
             text = variables[4] as String;
           case 7:
+            textAlign = parseTextAlign(variables[4] as String);
             text = variables[5] as String;
         }
       }
