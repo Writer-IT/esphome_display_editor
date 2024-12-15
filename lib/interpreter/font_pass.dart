@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:yaml/yaml.dart';
 
-/// Parses the [input] and returns a mapping from variable to [TextStyle]
+/// Parses the [input] and returns a mapping from variable to [TextStyle].
 Map<String, TextStyle> parseFontVariables(YamlMap input) {
   final variableToTextStyleMapping = <String, TextStyle>{};
   if (input.containsKey('font')) {
