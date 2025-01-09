@@ -158,5 +158,60 @@ void main() {
         expectedObject,
       );
     });
+    group('Testing parseNumValue', () {
+      test('Testing basic multiplication', () {
+        // Arrange
+        const valueString = '20 * 20';
+
+        // Act
+        final result = variablePass.parseNumValue(valueString: valueString);
+
+        // Assert
+        expect(result, 20 * 20);
+      });
+      test('Testing basic division', () {
+        // Arrange
+        const valueString = '20 / 40';
+
+        // Act
+        final result = variablePass.parseNumValue(valueString: valueString);
+
+        // Assert
+        expect(result, 20 / 40);
+      });
+      test('Testing basic subtraction', () {
+        // Arrange
+        const valueString = '20 - 40';
+
+        // Act
+        final result = variablePass.parseNumValue(valueString: valueString);
+
+        // Assert
+        expect(result, 20 - 40);
+      });
+      test('Testing basic addition', () {
+        // Arrange
+        const valueString = '20 + 40';
+
+        // Act
+        final result = variablePass.parseNumValue(valueString: valueString);
+
+        // Assert
+        expect(result, 20 + 40);
+      });
+      test('Testing mixed operations', () {
+        // Arrange
+        const valueString = '20 + 40 - 200 * 40 / 30';
+
+        // Act
+        final result = variablePass.parseNumValue(valueString: valueString);
+
+        // Assert
+        expect(
+          result.toStringAsPrecision(5),
+          (20 + 40 - 200 * 40 / 30).toStringAsPrecision(5),
+        );
+      });
+    });
   });
 }

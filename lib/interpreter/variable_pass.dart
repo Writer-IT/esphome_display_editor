@@ -127,14 +127,15 @@ class VariablePass {
     required String codeLine,
   }) {
     final (variableName, valueString) = extractNameAndValueString(codeLine);
+    final cleanValueString = valueString.replaceAll(';', '').trim();
 
     late Object valueObject;
 
     switch (variableType) {
       case VariableTypes.int:
-        valueObject = int.parse(valueString.replaceAll(';', ''));
+        valueObject = parseNumValue(valueString: cleanValueString).toInt();
       case VariableTypes.double:
-        valueObject = double.parse(valueString.replaceAll(';', ''));
+        valueObject = parseNumValue(valueString: cleanValueString);
       case VariableTypes.string:
         // TODO this is relatively naive, we only handle str a = "something";
         valueObject =
@@ -159,5 +160,55 @@ class VariablePass {
     variableCounter += 1;
     variableNameMapping[variableName] = mappedName;
     variableValueMapping[mappedName] = valueObject;
+  }
+
+  /// Tries to parse an int value from the [valueString]. First will try a naive
+  /// way, by just parsing as int. Else tries to do calculus and fetching values
+  /// from our known variables.
+  double parseNumValue({required String valueString}) {
+    valueString = valueString.trim();
+    final naiveResult = double.tryParse(valueString);
+    if (naiveResult != null) {
+      return naiveResult;
+    }
+    final add = valueString.split('+');
+    if (add.length > 1) {
+      return add.fold(
+        0,
+        (collector, element) => collector + parseNumValue(valueString: element),
+      );
+    }
+    final subSplit = valueString.split('-');
+    if (subSplit.length > 1) {
+      return subSplit.skip(1).fold(
+            parseNumValue(valueString: subSplit.first),
+            (collector, element) =>
+                collector - parseNumValue(valueString: element),
+          );
+    }
+    final mulSplit = valueString.split('*');
+    if (mulSplit.length > 1) {
+      return mulSplit.fold(
+        1,
+        (collector, element) => collector * parseNumValue(valueString: element),
+      );
+    }
+    final divSplit = valueString.split('/');
+    if (divSplit.length > 1) {
+      return divSplit.skip(1).fold(
+            parseNumValue(valueString: divSplit.first),
+            (collector, element) =>
+                collector / parseNumValue(valueString: element),
+          );
+    }
+    if (variableNameMapping.containsKey(valueString)) {
+      return variableValueMapping[variableNameMapping[valueString]]! as double;
+    }
+    if (variableValueMapping.containsKey(valueString)) {
+      return variableValueMapping[valueString]! as double;
+    }
+    throw ArgumentError(
+      'Provided value cannot be parsed as a number: $valueString',
+    );
   }
 }

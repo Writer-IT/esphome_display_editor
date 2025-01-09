@@ -1,10 +1,16 @@
+import 'dart:async';
+
 import 'package:esphome_display_editor/esp_home_renderer.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// Editor for ESPHome displays.
 class EspHomeEditor extends StatefulWidget {
   /// Instantiate the editor.
-  const EspHomeEditor({super.key});
+  const EspHomeEditor({required this.preferences, super.key});
+
+  final SharedPreferences preferences;
+  const String _codeKey = 'esphome_code';
 
   @override
   State<EspHomeEditor> createState() => _EspHomeEditorState();
@@ -43,6 +49,9 @@ class _EspHomeEditorState extends State<EspHomeEditor> {
                     child: ElevatedButton(
                       onPressed: () => setState(() {
                         code = textController.text;
+                        unawaited(
+                          widget.preferences.setString(widget._codeKey, code),
+                        );
                       }),
                       child: const Text('Render preview'),
                     ),
