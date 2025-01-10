@@ -1,19 +1,30 @@
 import 'package:esphome_display_editor/interpreter/interpreter_utilities.dart';
 import 'package:esphome_display_editor/interpreter/variable_types.dart';
+import 'package:esphome_display_editor/utils/parsing_helpers.dart';
 import 'package:flutter/material.dart';
 
 /// Collects variable names and replaces occurances with their reference to the
 /// object.
 class VariablePass {
+  /// Variable pass without pre-existing variables.
+  VariablePass();
+
+  /// Constructor for VariablePass, allows for passing existing variables, used
+  /// for testing.
+  VariablePass.prefilled({
+    required this.variableNameMapping,
+    required this.variableValueMapping,
+  });
+
   /// Variable counter stored per VariablePass, to make sure we all names are
   /// unique.
   int variableCounter = 0;
 
   /// Mapping between variables and their temporary name.
-  final variableNameMapping = <String, String>{};
+  late Map<String, String> variableNameMapping = {};
 
   /// Mapping between variable unique names and their values.
-  final variableValueMapping = <String, Object>{};
+  late Map<String, Object> variableValueMapping = {};
 
   /// Signature where you can see if something is a variable in the returned
   /// line.
@@ -171,10 +182,28 @@ class VariablePass {
     if (naiveResult != null) {
       return naiveResult;
     }
-    
-    final add = valueString.split('+');
-    if (add.length > 1) {
-      return add.fold(
+
+    final closures =
+        findClosures(openPattern: '(', closePattern: ')', input: valueString);
+    if (closures != null) {
+      final (start, end) = closures;
+      var collapsedValueString =
+          parseNumValue(valueString: valueString.substring(start + 1, end))
+              .toString();
+      if (start > 0) {
+        collapsedValueString =
+            valueString.substring(0, start - 1) + collapsedValueString;
+      }
+      if (end < valueString.length) {
+        collapsedValueString =
+            collapsedValueString + valueString.substring(end + 1);
+      }
+      return parseNumValue(valueString: collapsedValueString);
+    }
+
+    final addSplit = valueString.split('+');
+    if (addSplit.length > 1) {
+      return addSplit.fold(
         0,
         (collector, element) => collector + parseNumValue(valueString: element),
       );
@@ -195,6 +224,11 @@ class VariablePass {
       );
     }
     final divSplit = valueString.split('/');
+    // Handling the edge case of encounter 1 + -10,
+    // where the split will be [],[10]
+    if (divSplit.length == 1 && divSplit[0] == '') {
+      return 0;
+    }
     if (divSplit.length > 1) {
       return divSplit.skip(1).fold(
             parseNumValue(valueString: divSplit.first),
@@ -203,10 +237,20 @@ class VariablePass {
           );
     }
     if (variableNameMapping.containsKey(valueString)) {
-      return variableValueMapping[variableNameMapping[valueString]]! as double;
+      final value = variableValueMapping[variableNameMapping[valueString]];
+      if (value != null && value.runtimeType == int) {
+        return (value as int).toDouble();
+      } else {
+        return value! as double;
+      }
     }
     if (variableValueMapping.containsKey(valueString)) {
-      return variableValueMapping[valueString]! as double;
+      final value = variableValueMapping[valueString];
+      if (value != null && value.runtimeType == int) {
+        return (value as int).toDouble();
+      } else {
+        return value! as double;
+      }
     }
     throw ArgumentError(
       'Provided value cannot be parsed as a number: $valueString',

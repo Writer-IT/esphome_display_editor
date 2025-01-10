@@ -212,6 +212,68 @@ void main() {
           (20 + 40 - 200 * 40 / 30).toStringAsPrecision(5),
         );
       });
+      test('Testing paranthesis operations', () {
+        // Arrange
+        const valueString = '20 + (40 - 200) * 40 / 30';
+
+        // Act
+        final result = variablePass.parseNumValue(valueString: valueString);
+
+        // Assert
+        expect(
+          result.toStringAsPrecision(5),
+          (20 + (40 - 200) * 40 / 30).toStringAsPrecision(5),
+        );
+      });
+      test('Testing nested paranthesis operations', () {
+        // Arrange
+        const valueString = '20 + (40 - (200 * 10) - 20) * 40 / 30';
+
+        // Act
+        final result = variablePass.parseNumValue(valueString: valueString);
+
+        // Assert
+        expect(
+          result.toStringAsPrecision(5),
+          (20 + (40 - (200 * 10) - 20) * 40 / 30).toStringAsPrecision(5),
+        );
+      });
+      test('Testing getting value from variable with name mapping', () {
+        // Arrange
+        const expected = 29;
+        final testVariablePass = VariablePass.prefilled(
+          variableNameMapping: {'test': 'test1'},
+          variableValueMapping: {'test1': expected},
+        );
+        const valueString = 'test';
+
+        // Act
+        final result = testVariablePass.parseNumValue(valueString: valueString);
+
+        // Assert
+        expect(
+          result,
+          expected,
+        );
+      });
+      test('Testing getting value from variable with name mapping', () {
+        // Arrange
+        const expected = 4002;
+        final testVariablePass = VariablePass.prefilled(
+          variableNameMapping: {},
+          variableValueMapping: {'test1': expected},
+        );
+        const valueString = 'test1';
+
+        // Act
+        final result = testVariablePass.parseNumValue(valueString: valueString);
+
+        // Assert
+        expect(
+          result,
+          expected,
+        );
+      });
     });
   });
 }

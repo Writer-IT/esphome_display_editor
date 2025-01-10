@@ -1,4 +1,3 @@
-
 import 'package:esphome_display_editor/esp_home_renderer.dart';
 import 'package:flutter/material.dart';
 
