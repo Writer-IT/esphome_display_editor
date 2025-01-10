@@ -256,7 +256,7 @@ void main() {
           expected,
         );
       });
-      test('Testing getting value from variable with name mapping', () {
+      test('Testing getting value from variable', () {
         // Arrange
         const expected = 4002;
         final testVariablePass = VariablePass.prefilled(
@@ -272,6 +272,42 @@ void main() {
         expect(
           result,
           expected,
+        );
+      });
+      test('Testing getting value from variable complex', () {
+        // Arrange
+        const variableValue = 4002;
+        final testVariablePass = VariablePass.prefilled(
+          variableNameMapping: {},
+          variableValueMapping: {'test1': variableValue},
+        );
+        const valueString = '20 * 40 - (test1 + 10) / 20';
+
+        // Act
+        final result = testVariablePass.parseNumValue(valueString: valueString);
+
+        // Assert
+        expect(
+          result.toStringAsPrecision(5),
+          (20 * 40 - (variableValue + 10) / 20).toStringAsPrecision(5),
+        );
+      });
+      test('Testing getting value from variable with name mapping complex', () {
+        // Arrange
+        const variableValue = 29;
+        final testVariablePass = VariablePass.prefilled(
+          variableNameMapping: {'test': 'test1'},
+          variableValueMapping: {'test1': variableValue},
+        );
+        const valueString = '300 - 20 * (20 - test + 20) / 20';
+
+        // Act
+        final result = testVariablePass.parseNumValue(valueString: valueString);
+
+        // Assert
+        expect(
+          result.toStringAsPrecision(5),
+          (300 - 20 * (20 - variableValue + 20) / 20).toStringAsPrecision(5),
         );
       });
     });
