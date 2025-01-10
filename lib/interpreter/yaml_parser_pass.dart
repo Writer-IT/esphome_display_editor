@@ -33,7 +33,6 @@ import 'package:yaml/yaml.dart';
         ...variableToTextSensor,
       },
     ).parseDisplayCode(passedCodeLines);
-    print(variableToTextSensor);
 
     return (
       DisplayObjectPass().transformObjects(

@@ -171,6 +171,7 @@ class VariablePass {
     if (naiveResult != null) {
       return naiveResult;
     }
+    
     final add = valueString.split('+');
     if (add.length > 1) {
       return add.fold(
