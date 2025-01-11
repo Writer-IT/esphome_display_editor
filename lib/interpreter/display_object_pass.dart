@@ -4,6 +4,7 @@ import 'package:esphome_display_editor/objects/display_object.dart';
 import 'package:esphome_display_editor/objects/display_object_types.dart';
 import 'package:esphome_display_editor/objects/line.dart';
 import 'package:esphome_display_editor/objects/print.dart';
+import 'package:esphome_display_editor/objects/printf.dart';
 import 'package:esphome_display_editor/objects/rectangle.dart';
 import 'package:esphome_display_editor/objects/triangle.dart';
 
@@ -15,7 +16,7 @@ class DisplayObjectPass {
   /// Transforms [ParsedDisplayObject]s into [DisplayObject]s.
   List<DisplayObject> transformObjects(
     List<ParsedDisplayObject> parsedDisplayObjects,
-    Map<String, Object> variableToObjectMapping,
+    Map<String, Object> variableToValueMapping,
   ) {
     final result = <DisplayObject>[];
     for (final parsedDisplayObject in parsedDisplayObjects) {
@@ -24,39 +25,44 @@ class DisplayObjectPass {
           result.add(
             Circle.fromParsedDisplayObject(
               parsedDisplayObject,
-              variableToObjectMapping,
+              variableToValueMapping,
             ),
           );
         case DisplayObjectTypes.line:
           result.add(
             Line.fromParsedDisplayObject(
               parsedDisplayObject,
-              variableToObjectMapping,
+              variableToValueMapping,
             ),
           );
         case DisplayObjectTypes.rectangle:
           result.add(
             Rectangle.fromParsedDisplayObject(
               parsedDisplayObject,
-              variableToObjectMapping,
+              variableToValueMapping,
             ),
           );
         case DisplayObjectTypes.triangle:
           result.add(
             Triangle.fromParsedDisplayObject(
               parsedDisplayObject,
-              variableToObjectMapping,
+              variableToValueMapping,
             ),
           );
         case DisplayObjectTypes.print:
           result.add(
             Print.fromParsedDisplayObject(
               parsedDisplayObject,
-              variableToObjectMapping,
+              variableToValueMapping,
             ),
           );
         case DisplayObjectTypes.printf:
-          throw UnimplementedError();
+          result.add(
+            Printf.fromParsedDisplayObject(
+              parsedDisplayObject,
+              variableToValueMapping,
+            ),
+          );
       }
     }
     return result;

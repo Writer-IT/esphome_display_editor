@@ -15,6 +15,7 @@ class DisplayParserPass {
   static const _rectangleSignature = 'it.rectangle(';
   static const _triangleSignature = 'it.triangle(';
   static const _printSignature = 'it.print(';
+  static const _printfSignature = 'it.printf(';
 
   /// Parses given code to [ParsedDisplayObject]s.
   List<ParsedDisplayObject> parseDisplayCode(List<String> codeLines) {
@@ -93,6 +94,19 @@ class DisplayParserPass {
           result.add(
             ParsedDisplayObject(
               DisplayObjectTypes.print,
+              variables,
+              filled,
+            ),
+          );
+        case final printf when printf.startsWith(_printfSignature):
+          final variables = parseVariables(
+            codeLine: printf,
+            signature: _printfSignature,
+            variableToObjectMapping: variableToObjectMapping,
+          );
+          result.add(
+            ParsedDisplayObject(
+              DisplayObjectTypes.printf,
               variables,
               filled,
             ),
