@@ -11,38 +11,42 @@ import 'package:yaml/yaml.dart';
 /// the render object pass.
 
 /// Parses the code given in [input].
-(List<DisplayObject>, Map<String, String>) parseYaml(String input) {
-  final yaml = loadYaml(input);
-  if (verifyDisplayComponent(yaml as YamlMap)) {
-    final codeLines = extractCode(yaml);
+(List<DisplayObject>, Map<String, String>)? parseYaml(String? input) {
+  if (input != null && input.trim() != '') {
+    final yaml = loadYaml(input);
+    if (verifyDisplayComponent(yaml as YamlMap)) {
+      final codeLines = extractCode(yaml);
 
-    // Extract potential fonts from the yaml
-    final variableToTextStyleMapping = parseFontVariables(yaml);
+      // Extract potential fonts from the yaml
+      final variableToTextStyleMapping = parseFontVariables(yaml);
 
-    // Extract text_sensors, these are user configurable
-    final variableToTextSensor = parseTextSensors(yaml);
+      // Extract text_sensors, these are user configurable
+      final variableToTextSensor = parseTextSensors(yaml);
 
-    // Extract variables from code
-    final (variableToObjectMapping, passedCodeLines) =
-        VariablePass().processDisplayCode(codeLines);
+      // Extract variables from code
+      final (variableToObjectMapping, passedCodeLines) =
+          VariablePass().processDisplayCode(codeLines);
 
-    final parsedDisplayObjects = DisplayParserPass(
-      {
-        ...variableToObjectMapping,
-        ...variableToTextStyleMapping,
-        ...variableToTextSensor,
-      },
-    ).parseDisplayCode(passedCodeLines);
+      final parsedDisplayObjects = DisplayParserPass(
+        {
+          ...variableToObjectMapping,
+          ...variableToTextStyleMapping,
+          ...variableToTextSensor,
+        },
+      ).parseDisplayCode(passedCodeLines);
 
-    return (
-      DisplayObjectPass().transformObjects(
-        parsedDisplayObjects,
-        variableToObjectMapping,
-      ),
-      variableToTextSensor
-    );
+      return (
+        DisplayObjectPass().transformObjects(
+          parsedDisplayObjects,
+          variableToObjectMapping,
+        ),
+        variableToTextSensor
+      );
+    } else {
+      throw const FormatException('This was not valid yaml');
+    }
   } else {
-    throw const FormatException('This was not valid yaml');
+    return null;
   }
 }
 

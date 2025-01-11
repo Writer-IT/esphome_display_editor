@@ -20,24 +20,33 @@ class EspHomeRenderer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     try {
-      final (displayObjects, configurableVariables) = parseYaml(code);
+      final result = parseYaml(code);
+      if (result != null) {
+        final (displayObjects, configurableVariables) = result;
 
-      return ListView(
-        children: [
-          // const SizedBox(
-          //   width: 400,
-          //   height: 400,
-          //   child: SingleChildScrollView(
-          //     child: Text('Customize Values'),
-          //   ),
-          // ),
-          SizedBox(
-            width: 400,
-            height: 300,
-            child: CustomPaint(painter: DisplayObjectPainter(displayObjects)),
-          ),
-        ],
-      );
+        return ListView(
+          children: [
+            // const SizedBox(
+            //   width: 400,
+            //   height: 400,
+            //   child: SingleChildScrollView(
+            //     child: Text('Customize Values'),
+            //   ),
+            // ),
+            SizedBox(
+              width: 400,
+              height: 300,
+              child: CustomPaint(painter: DisplayObjectPainter(displayObjects)),
+            ),
+          ],
+        );
+      } else {
+        return const SizedBox(
+          width: 400,
+          height: 300,
+          child: Text('Your display will render here.'),
+        );
+      }
       // ignore: avoid_catches_without_on_clauses
     } catch (e, stacktrace) {
       return AlertDialog(
