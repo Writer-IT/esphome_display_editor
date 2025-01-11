@@ -21,7 +21,12 @@ class DisplayObjectPass {
     for (final parsedDisplayObject in parsedDisplayObjects) {
       switch (parsedDisplayObject.type) {
         case DisplayObjectTypes.circle:
-          result.add(Circle.fromParsedDisplayObject(parsedDisplayObject));
+          result.add(
+            Circle.fromParsedDisplayObject(
+              parsedDisplayObject,
+              variableToObjectMapping,
+            ),
+          );
         case DisplayObjectTypes.line:
           result.add(
             Line.fromParsedDisplayObject(
@@ -37,9 +42,19 @@ class DisplayObjectPass {
             ),
           );
         case DisplayObjectTypes.triangle:
-          result.add(Triangle.fromParsedDisplayObject(parsedDisplayObject));
+          result.add(
+            Triangle.fromParsedDisplayObject(
+              parsedDisplayObject,
+              variableToObjectMapping,
+            ),
+          );
         case DisplayObjectTypes.print:
-          result.add(Print.fromParsedDisplayObject(parsedDisplayObject));
+          result.add(
+            Print.fromParsedDisplayObject(
+              parsedDisplayObject,
+              variableToObjectMapping,
+            ),
+          );
         case DisplayObjectTypes.printf:
           throw UnimplementedError();
       }

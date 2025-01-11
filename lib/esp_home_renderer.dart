@@ -39,8 +39,12 @@ class EspHomeRenderer extends StatelessWidget {
         ],
       );
       // ignore: avoid_catches_without_on_clauses
-    } catch (e) {
-      return AlertDialog(content: Text('Uh oh something went wrong $e'));
+    } catch (e, stacktrace) {
+      return AlertDialog(
+        content: SingleChildScrollView(
+          child: Text('Uh oh something went wrong $e, $stacktrace'),
+        ),
+      );
     }
   }
 }

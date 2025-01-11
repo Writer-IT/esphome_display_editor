@@ -1,7 +1,7 @@
-import 'package:esphome_display_editor/interpreter/interpreter_utilities.dart';
 import 'package:esphome_display_editor/interpreter/parsed_display_object.dart';
 import 'package:esphome_display_editor/objects/display_object.dart';
 import 'package:esphome_display_editor/objects/display_object_types.dart';
+import 'package:esphome_display_editor/utils/parsing_helpers.dart';
 import 'package:flutter/material.dart';
 
 /// Rectangles, define a starting point and the width and height.
@@ -42,21 +42,21 @@ class Rectangle implements DisplayObject {
         );
       }
       if (variables.length >= 4) {
-        final x = evaluateNumberExpression(
-          variables[0].toString(),
-          variableToObjectMapping,
+        final x = parseNumValue(
+          valueObject: variables[0],
+          variableToValueMapping: variableToObjectMapping,
         );
-        final y = evaluateNumberExpression(
-          variables[1].toString(),
-          variableToObjectMapping,
+        final y = parseNumValue(
+          valueObject: variables[1],
+          variableToValueMapping: variableToObjectMapping,
         );
-        final width = evaluateNumberExpression(
-          variables[2].toString(),
-          variableToObjectMapping,
+        final width = parseNumValue(
+          valueObject: variables[2],
+          variableToValueMapping: variableToObjectMapping,
         );
-        final height = evaluateNumberExpression(
-          variables[3].toString(),
-          variableToObjectMapping,
+        final height = parseNumValue(
+          valueObject: variables[3],
+          variableToValueMapping: variableToObjectMapping,
         );
 
         rect = Rect.fromLTWH(x, y, width, height);

@@ -1,7 +1,7 @@
-import 'package:esphome_display_editor/interpreter/interpreter_utilities.dart';
 import 'package:esphome_display_editor/interpreter/parsed_display_object.dart';
 import 'package:esphome_display_editor/objects/display_object.dart';
 import 'package:esphome_display_editor/objects/display_object_types.dart';
+import 'package:esphome_display_editor/utils/parsing_helpers.dart';
 import 'package:flutter/material.dart';
 
 /// A line to be drawn.
@@ -25,23 +25,23 @@ class Line extends DisplayObject {
       }
       if (variables.length >= 4) {
         p1 = Offset(
-          evaluateNumberExpression(
-            variables[0] as String,
-            variableToObjectMapping,
+          parseNumValue(
+            valueObject: variables[0],
+            variableToValueMapping: variableToObjectMapping,
           ),
-          evaluateNumberExpression(
-            variables[1] as String,
-            variableToObjectMapping,
+          parseNumValue(
+            valueObject: variables[1],
+            variableToValueMapping: variableToObjectMapping,
           ),
         );
         p2 = Offset(
-          evaluateNumberExpression(
-            variables[2] as String,
-            variableToObjectMapping,
+          parseNumValue(
+            valueObject: variables[2],
+            variableToValueMapping: variableToObjectMapping,
           ),
-          evaluateNumberExpression(
-            variables[3] as String,
-            variableToObjectMapping,
+          parseNumValue(
+            valueObject: variables[3],
+            variableToValueMapping: variableToObjectMapping,
           ),
         );
       }

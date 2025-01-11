@@ -1,6 +1,7 @@
 import 'package:esphome_display_editor/interpreter/parsed_display_object.dart';
 import 'package:esphome_display_editor/objects/display_object.dart';
 import 'package:esphome_display_editor/objects/display_object_types.dart';
+import 'package:esphome_display_editor/utils/parsing_helpers.dart';
 import 'package:flutter/material.dart';
 
 /// Draws a circle, think that makes sense.
@@ -26,6 +27,7 @@ class Circle extends DisplayObject {
   /// Converts an [ParsedDisplayObject] to a [Circle].
   Circle.fromParsedDisplayObject(
     ParsedDisplayObject parsedDisplayObject,
+    Map<String, Object> variableToObjectMapping,
   ) {
     if (parsedDisplayObject.type == DisplayObjectTypes.circle) {
       final variables = parsedDisplayObject.variables;
@@ -36,10 +38,19 @@ class Circle extends DisplayObject {
       }
       if (variables.length >= 3) {
         center = Offset(
-          double.parse(variables[0] as String),
-          double.parse(variables[1] as String),
+          parseNumValue(
+            valueObject: variables[0],
+            variableToValueMapping: variableToObjectMapping,
+          ),
+          parseNumValue(
+            valueObject: variables[1],
+            variableToValueMapping: variableToObjectMapping,
+          ),
         );
-        radius = double.parse(variables[2] as String);
+        radius = parseNumValue(
+          valueObject: variables[2],
+          variableToValueMapping: variableToObjectMapping,
+        );
       }
       var color = Colors.black;
       if (variables.length == 4) {

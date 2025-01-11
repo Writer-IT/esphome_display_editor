@@ -2,6 +2,7 @@ import 'package:esphome_display_editor/interpreter/interpreter_utilities.dart';
 import 'package:esphome_display_editor/interpreter/parsed_display_object.dart';
 import 'package:esphome_display_editor/objects/display_object.dart';
 import 'package:esphome_display_editor/objects/display_object_types.dart';
+import 'package:esphome_display_editor/utils/parsing_helpers.dart';
 import 'package:flutter/material.dart';
 
 /// Text to be drawn.
@@ -24,7 +25,10 @@ class Print extends DisplayObject {
   }
 
   /// Converts a [ParsedDisplayObject] to a [Print].
-  Print.fromParsedDisplayObject(ParsedDisplayObject parsedDisplayObject) {
+  Print.fromParsedDisplayObject(
+    ParsedDisplayObject parsedDisplayObject,
+    Map<String, Object> variableToValueMapping,
+  ) {
     if (parsedDisplayObject.type == DisplayObjectTypes.print) {
       final variables = parsedDisplayObject.variables;
       if (variables.length < 4 || variables.length > 7) {
@@ -33,8 +37,14 @@ class Print extends DisplayObject {
         );
       } else {
         p1 = Offset(
-          double.parse(variables[0] as String),
-          double.parse(variables[1] as String),
+          parseNumValue(
+            valueObject: variables[0],
+            variableToValueMapping: variableToValueMapping,
+          ),
+          parseNumValue(
+            valueObject: variables[1],
+            variableToValueMapping: variableToValueMapping,
+          ),
         );
         font = variables[2] as TextStyle;
         switch (variables.length) {

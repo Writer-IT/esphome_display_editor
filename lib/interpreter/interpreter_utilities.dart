@@ -39,7 +39,7 @@ List<Object> parseVariables({
 }
 
 /// Evaluate a number expression and bring it back to the main value.
-double evaluateNumberExpression(
+double evaluateNumberExpressionUnused(
   String expression,
   Map<String, Object> variables,
 ) {

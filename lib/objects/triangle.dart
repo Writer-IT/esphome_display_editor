@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:esphome_display_editor/interpreter/parsed_display_object.dart';
 import 'package:esphome_display_editor/objects/display_object.dart';
 import 'package:esphome_display_editor/objects/display_object_types.dart';
+import 'package:esphome_display_editor/utils/parsing_helpers.dart';
 import 'package:flutter/material.dart';
 
 /// Triangle, specific kind of vertices with only three points.
@@ -33,6 +34,7 @@ class Triangle implements DisplayObject {
   /// Converts an [ParsedDisplayObject] to a [Triangle].
   Triangle.fromParsedDisplayObject(
     ParsedDisplayObject parsedDisplayObject,
+    Map<String, Object> variableToValueMapping,
   ) {
     if (parsedDisplayObject.type == DisplayObjectTypes.triangle) {
       final variables = parsedDisplayObject.variables;
@@ -44,16 +46,34 @@ class Triangle implements DisplayObject {
       if (variables.length >= 6) {
         positions = [
           Offset(
-            double.parse(variables[0] as String),
-            double.parse(variables[1] as String),
+            parseNumValue(
+              valueObject: variables[0],
+              variableToValueMapping: variableToValueMapping,
+            ),
+            parseNumValue(
+              valueObject: variables[1],
+              variableToValueMapping: variableToValueMapping,
+            ),
           ),
           Offset(
-            double.parse(variables[2] as String),
-            double.parse(variables[3] as String),
+            parseNumValue(
+              valueObject: variables[2],
+              variableToValueMapping: variableToValueMapping,
+            ),
+            parseNumValue(
+              valueObject: variables[3],
+              variableToValueMapping: variableToValueMapping,
+            ),
           ),
           Offset(
-            double.parse(variables[4] as String),
-            double.parse(variables[5] as String),
+            parseNumValue(
+              valueObject: variables[4],
+              variableToValueMapping: variableToValueMapping,
+            ),
+            parseNumValue(
+              valueObject: variables[5],
+              variableToValueMapping: variableToValueMapping,
+            ),
           ),
         ];
       }

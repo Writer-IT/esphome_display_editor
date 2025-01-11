@@ -144,9 +144,15 @@ class VariablePass {
 
     switch (variableType) {
       case VariableTypes.int:
-        valueObject = parseNumValue(valueString: cleanValueString).toInt();
+        valueObject = parseNumValue(
+          valueObject: cleanValueString,
+          variableToValueMapping: variableValueMapping,
+        ).toInt();
       case VariableTypes.double:
-        valueObject = parseNumValue(valueString: cleanValueString);
+        valueObject = parseNumValue(
+          valueObject: cleanValueString,
+          variableToValueMapping: variableValueMapping,
+        );
       case VariableTypes.string:
         // TODO this is relatively naive, we only handle str a = "something";
         valueObject =
@@ -176,84 +182,4 @@ class VariablePass {
   /// Tries to parse an int value from the [valueString]. First will try a naive
   /// way, by just parsing as int. Else tries to do calculus and fetching values
   /// from our known variables.
-  double parseNumValue({required String valueString}) {
-    valueString = valueString.trim();
-    final naiveResult = double.tryParse(valueString);
-    if (naiveResult != null) {
-      return naiveResult;
-    }
-
-    final closures =
-        findClosures(openPattern: '(', closePattern: ')', input: valueString);
-    if (closures != null) {
-      final (start, end) = closures;
-      var collapsedValueString =
-          parseNumValue(valueString: valueString.substring(start + 1, end))
-              .toString();
-      if (start > 0) {
-        collapsedValueString =
-            valueString.substring(0, start - 1) + collapsedValueString;
-      }
-      if (end < valueString.length) {
-        collapsedValueString =
-            collapsedValueString + valueString.substring(end + 1);
-      }
-      return parseNumValue(valueString: collapsedValueString);
-    }
-
-    final addSplit = valueString.split('+');
-    if (addSplit.length > 1) {
-      return addSplit.fold(
-        0,
-        (collector, element) => collector + parseNumValue(valueString: element),
-      );
-    }
-    final subSplit = valueString.split('-');
-    if (subSplit.length > 1) {
-      return subSplit.skip(1).fold(
-            parseNumValue(valueString: subSplit.first),
-            (collector, element) =>
-                collector - parseNumValue(valueString: element),
-          );
-    }
-    final mulSplit = valueString.split('*');
-    if (mulSplit.length > 1) {
-      return mulSplit.fold(
-        1,
-        (collector, element) => collector * parseNumValue(valueString: element),
-      );
-    }
-    final divSplit = valueString.split('/');
-    // Handling the edge case of encounter 1 + -10,
-    // where the split will be [],[10]
-    if (divSplit.length == 1 && divSplit[0] == '') {
-      return 0;
-    }
-    if (divSplit.length > 1) {
-      return divSplit.skip(1).fold(
-            parseNumValue(valueString: divSplit.first),
-            (collector, element) =>
-                collector / parseNumValue(valueString: element),
-          );
-    }
-    if (variableNameMapping.containsKey(valueString)) {
-      final value = variableValueMapping[variableNameMapping[valueString]];
-      if (value != null && value.runtimeType == int) {
-        return (value as int).toDouble();
-      } else {
-        return value! as double;
-      }
-    }
-    if (variableValueMapping.containsKey(valueString)) {
-      final value = variableValueMapping[valueString];
-      if (value != null && value.runtimeType == int) {
-        return (value as int).toDouble();
-      } else {
-        return value! as double;
-      }
-    }
-    throw ArgumentError(
-      'Provided value cannot be parsed as a number: $valueString',
-    );
-  }
 }
