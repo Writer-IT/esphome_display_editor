@@ -31,7 +31,7 @@ class Circle extends DisplayObject {
   ) {
     if (parsedDisplayObject.type == DisplayObjectTypes.circle) {
       final variables = parsedDisplayObject.variables;
-      if (variables.length < 2 || variables.length > 4) {
+      if (variables.length < 3 || variables.length > 4) {
         throw FormatException(
           'Circle requires 3 or 4 variables, provided: ${variables.length}',
         );
