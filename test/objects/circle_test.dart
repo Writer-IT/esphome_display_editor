@@ -4,6 +4,8 @@ import 'package:esphome_display_editor/objects/display_object_types.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../expect_helpers.dart';
+
 void main() {
   group('Testing parsed from display for Circle', () {
     test('Testing parsing from display object with 3 variables', () {
@@ -14,6 +16,9 @@ void main() {
         expectedVariables,
         false,
       );
+      final expectedPaint = Paint()
+        ..color = Colors.black
+        ..style = PaintingStyle.stroke;
 
       // Act
       final circle = Circle.fromParsedDisplayObject(parsedDisplayObject, {});
@@ -27,8 +32,7 @@ void main() {
         ),
       );
       expect(circle.radius, expectedVariables[2] as double);
-      expect(circle.paint.color.value, Colors.black.value);
-      expect(circle.paint.style, PaintingStyle.stroke);
+      expectPaints(circle.paint, expectedPaint);
     });
     test('Testing parsing from display object with 4 variables', () {
       // Arrange
@@ -38,6 +42,9 @@ void main() {
         expectedVariables,
         false,
       );
+      final expectedPaint = Paint()
+        ..color = expectedVariables[3] as Color
+        ..style = PaintingStyle.stroke;
 
       // Act
       final circle = Circle.fromParsedDisplayObject(parsedDisplayObject, {});
@@ -51,8 +58,7 @@ void main() {
         ),
       );
       expect(circle.radius, expectedVariables[2] as double);
-      expect(circle.paint.color.value, (expectedVariables[3] as Color).value);
-      expect(circle.paint.style, PaintingStyle.stroke);
+      expectPaints(circle.paint, expectedPaint);
     });
     test('Testing parsing from display object with too many variables', () {
       // Arrange
@@ -93,6 +99,9 @@ void main() {
         expectedVariables,
         true,
       );
+      final expectedPaint = Paint()
+        ..color = expectedVariables[3] as Color
+        ..style = PaintingStyle.fill;
 
       // Act
       final circle = Circle.fromParsedDisplayObject(parsedDisplayObject, {});
@@ -106,8 +115,7 @@ void main() {
         ),
       );
       expect(circle.radius, expectedVariables[2] as double);
-      expect(circle.paint.color.value, (expectedVariables[3] as Color).value);
-      expect(circle.paint.style, PaintingStyle.fill);
+      expectPaints(circle.paint, expectedPaint);
     });
   });
 }
