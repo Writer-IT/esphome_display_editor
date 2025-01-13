@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:esphome_display_editor/interpreter/parsed_display_object.dart';
 import 'package:esphome_display_editor/objects/display_object_types.dart';
 import 'package:esphome_display_editor/objects/line.dart';
@@ -76,6 +74,80 @@ void main() {
 
       // Act
       final line = Line.fromParsedDisplayObject(parsedDisplayObject, {});
+
+      // Assert
+      expect(
+        line.p1,
+        Offset(
+          expectedVariables[0] as double,
+          expectedVariables[1] as double,
+        ),
+      );
+      expect(
+        line.p2,
+        Offset(
+          expectedVariables[2] as double,
+          expectedVariables[3] as double,
+        ),
+      );
+      expectPaints(line.paint, expectedPaint);
+    });
+    test('Testing parsing from display object with too many variables', () {
+      // Arrange
+      final expectedVariables = ['43', '200', 10.04, 20.3, Colors.red, 'extra'];
+      final parsedDisplayObject = ParsedDisplayObject(
+        DisplayObjectTypes.circle,
+        expectedVariables,
+        false,
+      );
+
+      // Act & Assert
+      expect(
+        () => Line.fromParsedDisplayObject(parsedDisplayObject, {}),
+        throwsA(isA<FormatException>()),
+      );
+    });
+    test('Testing parsing from display object with too few variables', () {
+      // Arrange
+      final expectedVariables = ['43', '200'];
+      final parsedDisplayObject = ParsedDisplayObject(
+        DisplayObjectTypes.circle,
+        expectedVariables,
+        false,
+      );
+
+      // Act & Assert
+      expect(
+        () => Line.fromParsedDisplayObject(parsedDisplayObject, {}),
+        throwsA(isA<FormatException>()),
+      );
+    });
+    test(
+        'Testing parsing from display object with 5 variables from variable '
+        'map and filled', () {
+      // Arrange
+      final expectedVariables = [10.0, 10.0, 10.0, 10.0, Colors.pink];
+      final passedVariables = [
+        'number',
+        'number',
+        'number',
+        'number',
+        Colors.pink,
+      ];
+      final parsedDisplayObject = ParsedDisplayObject(
+        DisplayObjectTypes.line,
+        passedVariables,
+        true,
+      );
+      final expectedPaint = Paint()
+        ..color = expectedVariables[4] as Color
+        ..style = PaintingStyle.fill;
+
+      // Act
+      final line = Line.fromParsedDisplayObject(
+        parsedDisplayObject,
+        {'number': 10.0},
+      );
 
       // Assert
       expect(
