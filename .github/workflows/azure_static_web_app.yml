@@ -11,6 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
       - uses: subosito/flutter-action@v2
         with:
           channel: beta
@@ -19,9 +22,6 @@ jobs:
         run: flutter pub get
       - name: Build web app
         run: flutter build web
-      - uses: actions/checkout@v2
-        with:
-          submodules: true
       - name: Deploy to Azure
         uses: Azure/static-web-apps-deploy@v1
         with:
