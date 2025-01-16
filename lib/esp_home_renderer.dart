@@ -23,6 +23,10 @@ class EspHomeRenderer extends StatelessWidget {
       final result = parseYaml(code);
       if (result != null) {
         final (displayObjects, configurableVariables) = result;
+        // pass the configurable variables to a parent of display object painter
+        // and make sure the configurableVariables are edited in the parent of
+        // the painter. So triggerering a setState will make sure that the
+        // display is refreshed
 
         return ListView(
           children: [
@@ -33,6 +37,16 @@ class EspHomeRenderer extends StatelessWidget {
             //     child: Text('Customize Values'),
             //   ),
             // ),
+            SizedBox(
+              width: 400,
+              height: 400,
+              child: ListView.builder(
+                itemCount: configurableVariables.length,
+                itemBuilder: (context, index) => Row(
+                  children: [Text(configurableVariables.keys.toList()[index])],
+                ),
+              ),
+            ),
             SizedBox(
               width: 400,
               height: 300,
