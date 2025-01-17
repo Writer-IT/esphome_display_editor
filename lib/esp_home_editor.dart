@@ -74,6 +74,7 @@ class _EspHomeEditorState extends State<EspHomeEditor> {
                     child: EspHomeRenderer(
                       code: code,
                       variables: const [],
+                      preferences: prefs.data!,
                     ),
                   ),
                 ],
