@@ -22,6 +22,7 @@ List<Object> parseVariables({
   final rawVariables = codeLine
       .replaceRange(codeLine.length - 2, codeLine.length, '')
       .replaceRange(0, signature.length, '')
+      .replaceAll('.state.c_str()', '')
       .split(',')
       .map((variable) => variable.trim())
       .toList();
