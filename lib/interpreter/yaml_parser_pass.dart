@@ -10,41 +10,49 @@ import 'package:yaml/yaml.dart';
 /// Handles variable parsing and intepreting, as well as passing this context to
 /// the render object pass.
 
-/// Parses the code given in [input].
-(List<DisplayObject>, Map<String, String>)? parseYaml(String? input) {
+/// Parses the code given in [yaml] and the given [configurableVariables].
+List<DisplayObject> parseDisplayObjects(
+  YamlMap? yaml,
+  Map<String, String> configurableVariables,
+) {
+  if (yaml != null && verifyDisplayComponent(yaml)) {
+    final codeLines = extractCode(yaml);
+
+    // Extract potential fonts from the yaml
+    final variableToTextStyleMapping = parseFontVariables(yaml);
+
+    // Extract variables from code
+    final (variableToObjectMapping, passedCodeLines) =
+        VariablePass().processDisplayCode(codeLines);
+
+    final parsedDisplayObjects = DisplayParserPass(
+      {
+        ...variableToObjectMapping,
+        ...variableToTextStyleMapping,
+        ...configurableVariables,
+      },
+    ).parseDisplayCode(passedCodeLines);
+
+    return DisplayObjectPass().transformObjects(
+      parsedDisplayObjects,
+      variableToObjectMapping,
+    );
+  } else {
+    throw const FormatException('This was not valid yaml');
+  }
+}
+
+/// Parses variables from the yaml map that can be configured by the user.
+Map<String, String> parseConfigurableVariables(YamlMap yaml) {
+  // Extract text_sensors, these are user configurable
+  final variableToTextSensor = parseTextSensors(yaml);
+  return variableToTextSensor;
+}
+
+/// Parses the given [input] into a [YamlMap]
+YamlMap? parseYamlFromString(String? input) {
   if (input != null && input.trim() != '') {
-    final yaml = loadYaml(input);
-    if (verifyDisplayComponent(yaml as YamlMap)) {
-      final codeLines = extractCode(yaml);
-
-      // Extract potential fonts from the yaml
-      final variableToTextStyleMapping = parseFontVariables(yaml);
-
-      // Extract text_sensors, these are user configurable
-      final variableToTextSensor = parseTextSensors(yaml);
-
-      // Extract variables from code
-      final (variableToObjectMapping, passedCodeLines) =
-          VariablePass().processDisplayCode(codeLines);
-
-      final parsedDisplayObjects = DisplayParserPass(
-        {
-          ...variableToObjectMapping,
-          ...variableToTextStyleMapping,
-          ...variableToTextSensor,
-        },
-      ).parseDisplayCode(passedCodeLines);
-
-      return (
-        DisplayObjectPass().transformObjects(
-          parsedDisplayObjects,
-          variableToObjectMapping,
-        ),
-        variableToTextSensor
-      );
-    } else {
-      throw const FormatException('This was not valid yaml');
-    }
+    return loadYaml(input) as YamlMap;
   } else {
     return null;
   }
