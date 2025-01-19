@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:esphome_display_editor/esp_home_renderer.dart';
+import 'package:esphome_display_editor/ui/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -38,36 +39,48 @@ class _EspHomeEditorState extends State<EspHomeEditor> {
               child: Row(
                 children: [
                   Expanded(
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-                          child: TextField(
-                            controller: textController,
-                            keyboardType: TextInputType.multiline,
-                            maxLines: 40,
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              hintText: 'Your display lambda',
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 10, 0),
+                      child: Column(
+                        children: [
+                          Text(
+                            'Code',
+                            style: titleStyle,
+                            textAlign: TextAlign.center,
+                          ),
+                          const Divider(),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 10, 10, 20),
+                            child: TextField(
+                              controller: textController,
+                              keyboardType: TextInputType.multiline,
+                              maxLines: 40,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                hintText: 'Your display lambda',
+                              ),
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-                          child: ElevatedButton(
-                            onPressed: () => setState(() {
-                              code = textController.text;
-                              unawaited(
-                                prefs.data!.setString(
-                                  _displayCodeKey,
-                                  code,
-                                ),
-                              );
-                            }),
-                            child: const Text('Render preview'),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                            child: ElevatedButton(
+                              onPressed: () => setState(() {
+                                code = textController.text;
+                                unawaited(
+                                  prefs.data!.setString(
+                                    _displayCodeKey,
+                                    code,
+                                  ),
+                                );
+                              }),
+                              child: const Text(
+                                'Render Preview',
+                                style: TextStyle(fontSize: 18),
+                              ),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                   Expanded(
