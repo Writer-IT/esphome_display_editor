@@ -69,45 +69,71 @@ class _EspHomeRendererState extends State<EspHomeRenderer> {
               //     child: Text('Customize Values'),
               //   ),
               // ),
-              SizedBox(
-                width: 200,
-                height: 400,
-                child: ListView.builder(
-                  itemCount: configurableVariables.length,
-                  itemBuilder: (context, index) {
-                    final key = configurableVariables.keys.toList()[index];
-                    final value = configurableVariables.values.toList()[index];
 
-                    final controller = TextEditingController(text: value);
-                    return Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Row(
-                        children: [
-                          Expanded(child: Text(key)),
-                          Expanded(
-                            child: TextField(
-                              controller: controller,
-                              onTapOutside: (_) async {
-                                configurableVariables[key] = controller.text;
-                                await updateVariable(
-                                  'configVariables',
-                                  jsonEncode(configurableVariables),
-                                );
-                              },
-                              onSubmitted: (inputValue) async {
-                                configurableVariables[key] = inputValue;
-                                await updateVariable(
-                                  'configVariables',
-                                  jsonEncode(configurableVariables),
-                                );
-                              },
-                            ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const Text('Configurable Inputs'),
+                  SizedBox(
+                    width: 200,
+                    height: 400,
+                    child: ListView.builder(
+                      itemCount: configurableVariables.length,
+                      itemBuilder: (context, index) {
+                        final key = configurableVariables.keys.toList()[index];
+                        final value =
+                            configurableVariables.values.toList()[index];
+
+                        final controller = TextEditingController(text: value);
+                        return Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: TextField(
+                                  decoration: InputDecoration(
+                                    border: const OutlineInputBorder(),
+                                    label: Text(key),
+                                    suffixIcon: IconButton(
+                                      onPressed: () async {
+                                        await updateVariable(
+                                          'configVariables',
+                                          jsonEncode(configurableVariables),
+                                        );
+                                      },
+                                      icon: const Icon(
+                                        Icons.play_arrow,
+                                      ),
+                                    ),
+                                  ),
+                                  controller: controller,
+                                  onChanged: (inputValue) {
+                                    configurableVariables[key] = inputValue;
+                                  },
+                                  onTapOutside: (event) async {
+                                    configurableVariables[key] =
+                                        controller.text;
+                                    await updateVariable(
+                                      'configVariables',
+                                      jsonEncode(configurableVariables),
+                                    );
+                                  },
+                                  onSubmitted: (inputValue) async {
+                                    configurableVariables[key] = inputValue;
+                                    await updateVariable(
+                                      'configVariables',
+                                      jsonEncode(configurableVariables),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
               SizedBox(
                 width: 400,
