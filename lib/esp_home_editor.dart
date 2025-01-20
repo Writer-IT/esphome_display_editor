@@ -58,6 +58,8 @@ class _EspHomeEditorState extends State<EspHomeEditor> {
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
                                 hintText: 'Your display lambda',
+                                fillColor: Colors.white,
+                                filled: true,
                               ),
                             ),
                           ),

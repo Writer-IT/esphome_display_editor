@@ -103,6 +103,8 @@ class _EspHomeRendererState extends State<EspHomeRenderer> {
                                     decoration: InputDecoration(
                                       border: const OutlineInputBorder(),
                                       label: Text(key),
+                                      fillColor: Colors.white,
+                                      filled: true,
                                       suffixIcon: IconButton(
                                         onPressed: () async {
                                           await updateVariable(
