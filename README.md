@@ -33,6 +33,37 @@ The current APIs that are implemented are:
 |Font| Barebones (Only uses Roboto font right now, sizing works however)|
 |Regular Polygon| Broken (Barebones are there, most of it does not work)|
 
+# Running it locally
+
+This is a WIP, an OCI image will be published that allows you to run this locally.
+For now, you can use the [hosted version](esphome-display-editor.writerit.nl), the only difference is that you'll fetch
+the web app from Azure instead.
+
+# Running the project to develop against it
+
+If you use `nix`, this project uses `nix-direnv`, so you can just `cd` into the project
+and the dependencies will be loaded. Else you can use the current flutter version,
+this is defined in flake.nix, right now it is *3.23*.
+
+To run the project you can use the following command:
+
+```bash
+flutter run -d chrome
+```
+
+To run various tests and analys also run in the pipeline:
+
+```bash
+# Analyze the project on flaws
+flutter analyze
+
+# Format all current files
+dart format .
+
+# Run the tests
+flutter test
+```
+
 
 # Attribution
 
