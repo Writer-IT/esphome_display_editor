@@ -32,3 +32,8 @@ The current APIs that are implemented are:
 |Printf| Partially (Might be buggy with some input types right now)|
 |Font| Barebones (Only uses Roboto font right now, sizing works however)|
 |Regular Polygon| Broken (Barebones are there, most of it does not work)|
+
+
+# Attribution
+
+Icon taken from: [https://www.flaticon.com/free-icon/display_1325676](https://www.flaticon.com/free-icon/display_1325676)
