@@ -47,6 +47,7 @@ class Printf extends DisplayObject {
         ),
       );
       font = variables[2] as TextStyle;
+      print('using this font: $font');
       late String formatString;
       final formatVariables = <String>[];
       Color? color;

@@ -9,9 +9,28 @@ Map<String, TextStyle> parseFontVariables(YamlMap input) {
   if (input.containsKey('font')) {
     final fontSection = input['font'] as YamlList;
     for (final font in fontSection) {
-      variableToTextStyleMapping['id(${font['id'] as String})'] =
-          TextStyle(fontSize: (font['size'] as int).toDouble());
+      final fontPath = (font['file'] as String).toLowerCase();
+      var fontName = 'Roboto';
+      for (final each in availableFonts) {
+        if (fontPath.contains(each.toLowerCase())) {
+          fontName = each;
+          break;
+        }
+      }
+      print('selecting font: $fontName');
+
+      variableToTextStyleMapping['id(${font['id'] as String})'] = TextStyle(
+        fontFamily: fontName,
+        fontSize: (font['size'] as int).toDouble(),
+      );
     }
   }
   return variableToTextStyleMapping;
 }
+
+/// List of fonts that are loaded
+List<String> availableFonts = [
+  'roboto',
+  'jetbrains',
+  'Arial',
+];
