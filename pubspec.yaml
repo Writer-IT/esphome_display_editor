@@ -68,7 +68,10 @@ flutter:
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/assets-and-images/#from-packages
 
-fonts:
-  - family: Jetbrains
-    fonts:
-      - asset: fonts/JetBrainsMonoNL-Regular.ttf
+  fonts:
+    - family: jetbrains
+      fonts:
+        - asset: fonts/JetBrainsMonoNL-Regular.ttf
+    - family: roboto
+      fonts:
+        - asset: fonts/Roboto-Regular.ttf

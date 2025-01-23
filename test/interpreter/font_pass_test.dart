@@ -9,7 +9,9 @@ void main() {
       // Arrange
       const name = 'roboto';
       const size = 20.0;
-      final expected = {'id($name)': const TextStyle(fontSize: size)};
+      final expected = {
+        'id($name)': const TextStyle(fontSize: size, fontFamily: 'roboto'),
+      };
       final exampleYaml = loadYaml('''
             font:
               - file: "fonts/Roboto-Regular.ttf"
@@ -66,8 +68,8 @@ void main() {
       const name1 = 'jetbrains-mono';
       const size1 = 10.0;
       final expected = {
-        'id($name)': const TextStyle(fontSize: size),
-        'id($name1)': const TextStyle(fontSize: size1),
+        'id($name)': const TextStyle(fontSize: size, fontFamily: 'roboto'),
+        'id($name1)': const TextStyle(fontSize: size1, fontFamily: 'jetbrains'),
       };
       final exampleYaml = loadYaml('''
             font:

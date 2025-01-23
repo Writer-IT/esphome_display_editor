@@ -17,7 +17,6 @@ Map<String, TextStyle> parseFontVariables(YamlMap input) {
           break;
         }
       }
-      print('selecting font: $fontName');
 
       variableToTextStyleMapping['id(${font['id'] as String})'] = TextStyle(
         fontFamily: fontName,
