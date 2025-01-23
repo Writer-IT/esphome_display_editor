@@ -38,7 +38,7 @@ class Rectangle implements DisplayObject {
       final variables = parsedDisplayObject.variables;
       if (variables.length < 4 || variables.length > 5) {
         throw FormatException(
-          'Circle requires 4 or 5 variables, provided: ${variables.length}',
+          'Rectangle requires 4 or 5 variables, provided: ${variables.length}',
         );
       }
       if (variables.length >= 4) {
