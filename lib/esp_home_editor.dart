@@ -35,6 +35,18 @@ class _EspHomeEditorState extends State<EspHomeEditor> {
               backgroundColor: Theme.of(context).colorScheme.inversePrimary,
               title: const Text('ESP Home Editor'),
             ),
+            drawer: Drawer(
+              child: ListView(
+                children: const [
+                  DrawerHeader(child: Text('ESPHome Display Editor')),
+                  AboutListTile(
+                    icon: Icon(Icons.info),
+                    applicationName: 'ESPHome Display Editor',
+                    applicationVersion: 'Rolling Release',
+                  ),
+                ],
+              ),
+            ),
             body: Row(
               children: [
                 Expanded(
