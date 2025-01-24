@@ -87,11 +87,21 @@ class Printf extends DisplayObject {
           if ('%' == nextChar) {
             stringBuffer.write('%');
           } else if (['d', 'i', 'u'].contains(nextChar)) {
-            final variable = int.tryParse(formatVariables.removeAt(0));
-            stringBuffer.write(variable);
+            final abstractVariable = formatVariables.removeAt(0);
+            final variable = int.tryParse(abstractVariable);
+            if (variable != null) {
+              stringBuffer.write(variable);
+            } else {
+              stringBuffer.write(abstractVariable);
+            }
           } else if ('f' == nextChar) {
-            final variable = double.tryParse(formatVariables.removeAt(0));
-            stringBuffer.write(variable);
+            final abstractVariable = formatVariables.removeAt(0);
+            final variable = double.tryParse(abstractVariable);
+            if (variable != null) {
+              stringBuffer.write(variable);
+            } else {
+              stringBuffer.write(abstractVariable);
+            }
           } else if (['c', 's'].contains(nextChar)) {
             final variable = formatVariables.removeAt(0);
             stringBuffer.write(variable);
