@@ -35,26 +35,28 @@ class _EspHomeEditorState extends State<EspHomeEditor> {
               backgroundColor: Theme.of(context).colorScheme.inversePrimary,
               title: const Text('ESP Home Editor'),
             ),
-            body: Center(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 10, 10, 0),
-                      child: Column(
-                        children: [
-                          Text(
-                            'Code',
-                            style: titleStyle,
-                            textAlign: TextAlign.center,
-                          ),
-                          const Divider(),
-                          Padding(
+            body: Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 10, 0),
+                    child: Column(
+                      children: [
+                        Text(
+                          'Code',
+                          style: titleStyle,
+                          textAlign: TextAlign.center,
+                        ),
+                        const Divider(),
+                        Expanded(
+                          child: Padding(
                             padding: const EdgeInsets.fromLTRB(20, 10, 10, 20),
                             child: TextField(
                               controller: textController,
                               keyboardType: TextInputType.multiline,
-                              maxLines: 40,
+                              maxLines: null,
+                              textAlignVertical: TextAlignVertical.top,
+                              expands: true,
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
                                 hintText: 'Your display lambda',
@@ -63,37 +65,37 @@ class _EspHomeEditorState extends State<EspHomeEditor> {
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-                            child: ElevatedButton(
-                              onPressed: () => setState(() {
-                                code = textController.text;
-                                unawaited(
-                                  prefs.data!.setString(
-                                    _displayCodeKey,
-                                    code,
-                                  ),
-                                );
-                              }),
-                              child: const Text(
-                                'Render Preview',
-                                style: TextStyle(fontSize: 18),
-                              ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                          child: ElevatedButton(
+                            onPressed: () => setState(() {
+                              code = textController.text;
+                              unawaited(
+                                prefs.data!.setString(
+                                  _displayCodeKey,
+                                  code,
+                                ),
+                              );
+                            }),
+                            child: const Text(
+                              'Render Preview',
+                              style: TextStyle(fontSize: 18),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                  Expanded(
-                    child: EspHomeRenderer(
-                      code: code,
-                      variables: const [],
-                      preferences: prefs.data!,
-                    ),
+                ),
+                Expanded(
+                  child: EspHomeRenderer(
+                    code: code,
+                    variables: const [],
+                    preferences: prefs.data!,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           );
         } else {
