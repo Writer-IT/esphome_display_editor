@@ -7,5 +7,5 @@ enum DisplayObjectTypes {
   triangle,
   print,
   printf,
-  // regularPolygon,
+  regularPolygon,
 }

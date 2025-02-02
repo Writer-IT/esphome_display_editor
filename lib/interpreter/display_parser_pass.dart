@@ -16,6 +16,7 @@ class DisplayParserPass {
   static const _triangleSignature = 'it.triangle(';
   static const _printSignature = 'it.print(';
   static const _printfSignature = 'it.printf(';
+  static const _regularPolygonSignature = 'it.regular_polygon(';
 
   /// Parses given code to [ParsedDisplayObject]s.
   List<ParsedDisplayObject> parseDisplayCode(List<String> codeLines) {
@@ -107,6 +108,21 @@ class DisplayParserPass {
           result.add(
             ParsedDisplayObject(
               DisplayObjectTypes.printf,
+              variables,
+              filled,
+            ),
+          );
+
+        case final regularPolygon
+            when regularPolygon.startsWith(_regularPolygonSignature):
+          final variables = parseVariables(
+            codeLine: codeLine,
+            signature: _regularPolygonSignature,
+            variableToObjectMapping: variableToObjectMapping,
+          );
+          result.add(
+            ParsedDisplayObject(
+              DisplayObjectTypes.regularPolygon,
               variables,
               filled,
             ),
