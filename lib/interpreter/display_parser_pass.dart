@@ -16,7 +16,7 @@ class DisplayParserPass {
   static const _triangleSignature = 'it.triangle(';
   static const _printSignature = 'it.print(';
   static const _printfSignature = 'it.printf(';
-  static const _regularPolygonSignature = ' it.regularPolygon(';
+  static const _regularPolygonSignature = 'it.regular_polygon(';
 
   /// Parses given code to [ParsedDisplayObject]s.
   List<ParsedDisplayObject> parseDisplayCode(List<String> codeLines) {

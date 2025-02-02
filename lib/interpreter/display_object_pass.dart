@@ -65,10 +65,12 @@ class DisplayObjectPass {
             ),
           );
         case DisplayObjectTypes.regularPolygon:
-          result.add(RegularPolygon.fromParsedDisplayObject(
-            parsedDisplayObject,
-            variableToValueMapping,
-          ));
+          result.add(
+            RegularPolygon.fromParsedDisplayObject(
+              parsedDisplayObject,
+              variableToValueMapping,
+            ),
+          );
       }
     }
     return result;
