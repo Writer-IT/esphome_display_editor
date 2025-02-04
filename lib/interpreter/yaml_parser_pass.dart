@@ -1,3 +1,4 @@
+import 'package:esphome_display_editor/interpreter/color_pass.dart';
 import 'package:esphome_display_editor/interpreter/display_object_pass.dart';
 import 'package:esphome_display_editor/interpreter/display_parser_pass.dart';
 import 'package:esphome_display_editor/interpreter/font_pass.dart';
@@ -18,8 +19,8 @@ List<DisplayObject> parseDisplayObjects(
   if (yaml != null && verifyDisplayComponent(yaml)) {
     final codeLines = extractCode(yaml);
 
-    // Extract potential fonts from the yaml
     final variableToTextStyleMapping = parseFontVariables(yaml);
+    final variableToColorMapping = parseColorVariables(yaml);
 
     // Extract variables from code
     final (variableToObjectMapping, passedCodeLines) =
@@ -29,6 +30,7 @@ List<DisplayObject> parseDisplayObjects(
       {
         ...variableToObjectMapping,
         ...variableToTextStyleMapping,
+        ...variableToColorMapping,
         ...configurableVariables,
       },
     ).parseDisplayCode(passedCodeLines);
