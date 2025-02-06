@@ -5,6 +5,7 @@ import 'package:esphome_display_editor/display_object_painter.dart';
 import 'package:esphome_display_editor/interpreter/yaml_parser_pass.dart';
 import 'package:esphome_display_editor/ui/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Responsible for rendering the display.
@@ -152,29 +153,7 @@ class _EspHomeRendererState extends State<EspHomeRenderer> {
                     ),
                     const Divider(),
                     if (errors.isNotEmpty)
-                      SizedBox(
-                        width: double.infinity,
-                        child: Card.outlined(
-                          color: Theme.of(context).colorScheme.errorContainer,
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 5, bottom: 5),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    'You have ${errors.length} errors',
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                                const Padding(
-                                  padding: EdgeInsets.only(left: 5, right: 5),
-                                  child: Icon(Icons.info_outline),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      )
+                      buildErrorBox(context, errors)
                     else
                       const SizedBox.shrink(),
                     CustomPaint(
@@ -201,4 +180,92 @@ class _EspHomeRendererState extends State<EspHomeRenderer> {
       );
     }
   }
+
+  SizedBox buildErrorBox(BuildContext context, List<Error> errors) => SizedBox(
+        width: double.infinity,
+        child: GestureDetector(
+          onTap: () => unawaited(
+            showDialog(
+              context: context,
+              builder: (context) => Padding(
+                padding: const EdgeInsets.all(12),
+                child: AlertDialog(
+                  backgroundColor: Theme.of(context).colorScheme.errorContainer,
+                  title: Text(
+                    'Found the following '
+                    '${errors.length} errors',
+                  ),
+                  content: SingleChildScrollView(
+                    child: ListBody(
+                      children: errors
+                          .map(
+                            (error) => ExpansionTile(
+                              title: Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      error.toString(),
+                                    ),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
+                                      Clipboard.setData(
+                                        ClipboardData(
+                                          text: '$error\n'
+                                              '${error.stackTrace}',
+                                        ),
+                                      );
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                            'Copied to clipboard!',
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    icon: const Icon(Icons.copy),
+                                  ),
+                                ],
+                              ),
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.all(8),
+                                  child: SelectableText(
+                                    '$error\n${error.stackTrace}',
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          child: Card.outlined(
+            color: Theme.of(context).colorScheme.errorContainer,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 5, bottom: 5),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      'You have ${errors.length} errors',
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 5, right: 5),
+                    child: Icon(Icons.info_outline),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
 }
