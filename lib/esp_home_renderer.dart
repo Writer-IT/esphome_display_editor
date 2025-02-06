@@ -65,14 +65,6 @@ class _EspHomeRendererState extends State<EspHomeRenderer> {
             padding: const EdgeInsets.fromLTRB(10, 10, 20, 0),
             child: ListView(
               children: [
-                // const SizedBox(
-                //   width: 400,
-                //   height: 400,
-                //   child: SingleChildScrollView(
-                //     child: Text('Customize Values'),
-                //   ),
-                // ),
-
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -159,6 +151,32 @@ class _EspHomeRendererState extends State<EspHomeRenderer> {
                       ),
                     ),
                     const Divider(),
+                    if (errors.isNotEmpty)
+                      SizedBox(
+                        width: double.infinity,
+                        child: Card.outlined(
+                          color: Theme.of(context).colorScheme.errorContainer,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 5, bottom: 5),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    'You have ${errors.length} errors',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                                const Padding(
+                                  padding: EdgeInsets.only(left: 5, right: 5),
+                                  child: Icon(Icons.info_outline),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      )
+                    else
+                      const SizedBox.shrink(),
                     CustomPaint(
                       painter: DisplayObjectPainter(displayObjects),
                     ),
