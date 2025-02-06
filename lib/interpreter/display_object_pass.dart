@@ -15,64 +15,70 @@ class DisplayObjectPass {
   DisplayObjectPass();
 
   /// Transforms [ParsedDisplayObject]s into [DisplayObject]s.
-  List<DisplayObject> transformObjects(
+  (List<DisplayObject>, List<Error>) transformObjects(
     List<ParsedDisplayObject> parsedDisplayObjects,
     Map<String, Object> variableToValueMapping,
   ) {
     final result = <DisplayObject>[];
+    final error = <Error>[];
     for (final parsedDisplayObject in parsedDisplayObjects) {
-      switch (parsedDisplayObject.type) {
-        case DisplayObjectTypes.circle:
-          result.add(
-            Circle.fromParsedDisplayObject(
-              parsedDisplayObject,
-              variableToValueMapping,
-            ),
-          );
-        case DisplayObjectTypes.line:
-          result.add(
-            Line.fromParsedDisplayObject(
-              parsedDisplayObject,
-              variableToValueMapping,
-            ),
-          );
-        case DisplayObjectTypes.rectangle:
-          result.add(
-            Rectangle.fromParsedDisplayObject(
-              parsedDisplayObject,
-              variableToValueMapping,
-            ),
-          );
-        case DisplayObjectTypes.triangle:
-          result.add(
-            Triangle.fromParsedDisplayObject(
-              parsedDisplayObject,
-              variableToValueMapping,
-            ),
-          );
-        case DisplayObjectTypes.print:
-          result.add(
-            Print.fromParsedDisplayObject(
-              parsedDisplayObject,
-              variableToValueMapping,
-            ),
-          );
-        case DisplayObjectTypes.printf:
-          result.add(
-            Printf.fromParsedDisplayObject(
-              parsedDisplayObject,
-              variableToValueMapping,
-            ),
-          );
-        case DisplayObjectTypes.regularPolygon:
-          result.add(
-            RegularPolygon.fromParsedDisplayObject(
-              parsedDisplayObject,
-              variableToValueMapping,
-            ),
-          );
+      try {
+        switch (parsedDisplayObject.type) {
+          case DisplayObjectTypes.circle:
+            result.add(
+              Circle.fromParsedDisplayObject(
+                parsedDisplayObject,
+                variableToValueMapping,
+              ),
+            );
+          case DisplayObjectTypes.line:
+            result.add(
+              Line.fromParsedDisplayObject(
+                parsedDisplayObject,
+                variableToValueMapping,
+              ),
+            );
+          case DisplayObjectTypes.rectangle:
+            result.add(
+              Rectangle.fromParsedDisplayObject(
+                parsedDisplayObject,
+                variableToValueMapping,
+              ),
+            );
+          case DisplayObjectTypes.triangle:
+            result.add(
+              Triangle.fromParsedDisplayObject(
+                parsedDisplayObject,
+                variableToValueMapping,
+              ),
+            );
+          case DisplayObjectTypes.print:
+            result.add(
+              Print.fromParsedDisplayObject(
+                parsedDisplayObject,
+                variableToValueMapping,
+              ),
+            );
+          case DisplayObjectTypes.printf:
+            result.add(
+              Printf.fromParsedDisplayObject(
+                parsedDisplayObject,
+                variableToValueMapping,
+              ),
+            );
+          case DisplayObjectTypes.regularPolygon:
+            result.add(
+              RegularPolygon.fromParsedDisplayObject(
+                parsedDisplayObject,
+                variableToValueMapping,
+              ),
+            );
+        }
+        // ignore: avoid_catching_errors
+      } on Error catch (e) {
+        error.add(e);
       }
     }
-    return result;
+    return (result, error);
   }
 }

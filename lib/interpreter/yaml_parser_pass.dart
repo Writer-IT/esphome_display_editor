@@ -12,7 +12,7 @@ import 'package:yaml/yaml.dart';
 /// the render object pass.
 
 /// Parses the code given in [yaml] and the given [configurableVariables].
-List<DisplayObject> parseDisplayObjects(
+(List<DisplayObject>, List<Error>) parseDisplayObjects(
   YamlMap? yaml,
   Map<String, String> configurableVariables,
 ) {

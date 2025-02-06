@@ -58,7 +58,7 @@ class _EspHomeRendererState extends State<EspHomeRenderer> {
             }
           }
 
-          final displayObjects =
+          final (displayObjects, errors) =
               parseDisplayObjects(yaml, configurableVariables);
 
           return Padding(
