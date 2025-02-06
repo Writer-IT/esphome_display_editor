@@ -2,8 +2,6 @@ name: Azure Static Web Apps CI/CD
 
 on:
   push:
-    paths-ignore:
-      - 'test/**'
     branches:
       - main
 
@@ -22,6 +20,11 @@ jobs:
           flutter-version: 3.23.0-0.1.pre
       - name: Get dependencies
         run: flutter pub get
+      - run: flutter --version
+      - name: Do static analysis on the code
+        run: flutter analyze
+      - name: Execute the test suite
+        run: flutter test
       - name: Build web app
         run: flutter build web
       - name: Deploy to Azure
