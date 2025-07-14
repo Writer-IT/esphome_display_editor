@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:esphome_display_editor/interpreter/color_pass.dart';
 import 'package:esphome_display_editor/interpreter/display_object_pass.dart';
 import 'package:esphome_display_editor/interpreter/display_parser_pass.dart';
