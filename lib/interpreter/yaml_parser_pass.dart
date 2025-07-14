@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:esphome_display_editor/interpreter/color_pass.dart';
 import 'package:esphome_display_editor/interpreter/display_object_pass.dart';
 import 'package:esphome_display_editor/interpreter/display_parser_pass.dart';
@@ -54,7 +56,8 @@ Map<String, String> parseConfigurableVariables(YamlMap yaml) {
 /// Parses the given [input] into a [YamlMap]
 YamlMap? parseYamlFromString(String? input) {
   if (input != null && input.trim() != '') {
-    return loadYaml(input) as YamlMap;
+    final cleanedInput = input.replaceAll('!secret', '');
+    return loadYaml(cleanedInput, recover: true) as YamlMap;
   } else {
     return null;
   }
