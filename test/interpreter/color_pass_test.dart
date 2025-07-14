@@ -47,6 +47,28 @@ void main() {
         expected.toRadixString(16),
       );
     });
+    test('Check with percentage colors as doubles', () {
+      // Arrange
+      const name = 'test_id';
+      const variableName = 'id($name)';
+      const expected = 0xffff0000;
+      final input = loadYaml('''
+                color:
+                  - id: $name
+                    red: 1.0
+                    green: 0.0
+                    blue: 0.0
+            ''') as YamlMap;
+      // Act
+      final result = parseColorVariables(input);
+
+      // Assert
+      expect(result.containsKey(variableName), true);
+      expect(
+        result[variableName]!.value.toRadixString(16),
+        expected.toRadixString(16),
+      );
+    });
     test('Check with colors', () {
       // Arrange
       const name = 'test_id';

@@ -14,15 +14,9 @@ Map<String, Color> parseColorVariables(YamlMap input) {
       } else if (colorYaml.containsKey('red') &&
           colorYaml.containsKey('green') &&
           colorYaml.containsKey('blue')) {
-        final red = int.parse(
-          (colorYaml['red'] as String).replaceFirst('%', '').trim(),
-        );
-        final green = int.parse(
-          (colorYaml['green'] as String).replaceFirst('%', '').trim(),
-        );
-        final blue = int.parse(
-          (colorYaml['blue'] as String).replaceFirst('%', '').trim(),
-        );
+        final red = parseColorPercentage(colorYaml['red']);
+        final green = parseColorPercentage(colorYaml['green']);
+        final blue = parseColorPercentage(colorYaml['blue']);
 
         color = Color.fromRGBO(
           (red / 100 * 255).round(),
@@ -47,4 +41,17 @@ Map<String, Color> parseColorVariables(YamlMap input) {
   }
 
   return variableToColorMapping;
+}
+
+/// Parses an [input] for color if it's thought to be a percentage, but can be a
+/// double or a string.
+// ignore: avoid_annotating_with_dynamic
+int parseColorPercentage(dynamic input) {
+  final doublePercentage = double.tryParse(input.toString());
+
+  if (doublePercentage != null) {
+    return (doublePercentage * 100).toInt();
+  } else {
+    return int.parse((input as String).replaceFirst('%', '').trim());
+  }
 }
