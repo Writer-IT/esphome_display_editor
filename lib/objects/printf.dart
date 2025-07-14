@@ -52,12 +52,14 @@ class Printf extends DisplayObject {
       Color? color;
       Color? backgroundColor;
       var parsingFormatVariables = false;
+
+      /// Parsing actual variables and parsing all format variables after
       for (var i = 3; i < variables.length; i++) {
         final variable = variables[i].toString().trim();
         if (parsingFormatVariables || i > 7) {
           formatVariables.add(variable);
         } else {
-          if (i == 3) {
+          if (i >= 3) {
             final (type, object) = _parsePotentialVar(variable);
             switch (type) {
               case == String:
@@ -76,9 +78,15 @@ class Printf extends DisplayObject {
                   'This printf variable could not be parsed',
                 );
             }
+          } else {
+            throw FormatException(
+                'Guess this broke, better call tech support, '
+                'context $variables');
           }
         }
       }
+      
+      // Inputting parsed variables
       final stringBuffer = StringBuffer();
       for (var i = 1; i < formatString.length - 1; i++) {
         if (formatString[i] == '%' && i + 1 < formatString.length - 1) {
