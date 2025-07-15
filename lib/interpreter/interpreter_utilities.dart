@@ -22,13 +22,15 @@ List<Object> parseVariables({
   final rawVariables = codeLine
       .replaceRange(codeLine.length - 2, codeLine.length, '')
       .replaceRange(0, signature.length, '')
-      .replaceAll('.state.c_str()', '')
       .split(',')
       .map((variable) => variable.trim())
       .toList();
 
   final variables = <Object>[];
-  for (final rawVariable in rawVariables) {
+  for (var rawVariable in rawVariables) {
+    if (rawVariable.startsWith('id(')) {
+        rawVariable = rawVariable.substring(0, rawVariable.indexOf(')') + 1);
+        }
     if (variableToObjectMapping.keys.contains(rawVariable)) {
       variables.add(variableToObjectMapping[rawVariable]!);
     } else {

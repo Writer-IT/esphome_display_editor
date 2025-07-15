@@ -79,14 +79,14 @@ class Printf extends DisplayObject {
                 );
             }
           } else {
-            throw FormatException(
-                'Guess this broke, better call tech support, '
+            throw FormatException('Guess this broke, better call tech support, '
                 'context $variables');
           }
         }
       }
-      
+
       // Inputting parsed variables
+      // TODO separate this out
       final stringBuffer = StringBuffer();
       for (var i = 1; i < formatString.length - 1; i++) {
         if (formatString[i] == '%' && i + 1 < formatString.length - 1) {
@@ -102,13 +102,33 @@ class Printf extends DisplayObject {
             } else {
               stringBuffer.write(abstractVariable);
             }
-          } else if ('f' == nextChar) {
-            final abstractVariable = formatVariables.removeAt(0);
-            final variable = double.tryParse(abstractVariable);
+          } else if ('f' == nextChar || '.' == nextChar) {
+            var precisionString = '';
+            if (nextChar == '.') {
+              // Skipping over characters to find 'f' and number of decimals
+              i += 1;
+              while (i + 1 < formatString.length - 1) {
+                  final precisionChar = formatString[i+1].toLowerCase();
+                  if (precisionChar == 'f' || int.tryParse(precisionChar) == null) {
+                      i += 1;
+                      break;
+                  } else {
+                      precisionString += precisionChar;
+                      i += 1;
+                  }
+              }
+            }
+            final dynamicVariable = formatVariables.removeAt(0);
+            final variable = double.tryParse(dynamicVariable);
             if (variable != null) {
-              stringBuffer.write(variable);
+              final precision = int.tryParse(precisionString);
+              if (precision == null) {
+                stringBuffer.write(variable);
+              } else {
+                stringBuffer.write(variable.toStringAsPrecision(precision));
+              }
             } else {
-              stringBuffer.write(abstractVariable);
+              stringBuffer.write(dynamicVariable);
             }
           } else if (['c', 's'].contains(nextChar)) {
             final variable = formatVariables.removeAt(0);
