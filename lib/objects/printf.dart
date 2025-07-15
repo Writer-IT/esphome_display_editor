@@ -108,14 +108,15 @@ class Printf extends DisplayObject {
               // Skipping over characters to find 'f' and number of decimals
               i += 1;
               while (i + 1 < formatString.length - 1) {
-                  final precisionChar = formatString[i+1].toLowerCase();
-                  if (precisionChar == 'f' || int.tryParse(precisionChar) == null) {
-                      i += 1;
-                      break;
-                  } else {
-                      precisionString += precisionChar;
-                      i += 1;
-                  }
+                final precisionChar = formatString[i + 1].toLowerCase();
+                if (precisionChar == 'f' ||
+                    int.tryParse(precisionChar) == null) {
+                  i += 1;
+                  break;
+                } else {
+                  precisionString += precisionChar;
+                  i += 1;
+                }
               }
             }
             final dynamicVariable = formatVariables.removeAt(0);

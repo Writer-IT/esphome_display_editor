@@ -29,8 +29,8 @@ List<Object> parseVariables({
   final variables = <Object>[];
   for (var rawVariable in rawVariables) {
     if (rawVariable.startsWith('id(')) {
-        rawVariable = rawVariable.substring(0, rawVariable.indexOf(')') + 1);
-        }
+      rawVariable = rawVariable.substring(0, rawVariable.indexOf(')') + 1);
+    }
     if (variableToObjectMapping.keys.contains(rawVariable)) {
       variables.add(variableToObjectMapping[rawVariable]!);
     } else {

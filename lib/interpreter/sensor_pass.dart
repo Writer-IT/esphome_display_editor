@@ -8,8 +8,7 @@ Map<String, String> parseSensors(YamlMap input) {
   if (input.containsKey('sensor')) {
     final sensorSection = input['sensor'] as YamlList;
     for (final sensor in sensorSection) {
-      variableToValueMapping['id(${sensor['id'] as String})'] =
-          'Placeholder';
+      variableToValueMapping['id(${sensor['id'] as String})'] = 'Placeholder';
     }
   }
 
