@@ -2,6 +2,7 @@ import 'package:esphome_display_editor/interpreter/color_pass.dart';
 import 'package:esphome_display_editor/interpreter/display_object_pass.dart';
 import 'package:esphome_display_editor/interpreter/display_parser_pass.dart';
 import 'package:esphome_display_editor/interpreter/font_pass.dart';
+import 'package:esphome_display_editor/interpreter/sensor_pass.dart';
 import 'package:esphome_display_editor/interpreter/text_sensor_pass.dart';
 import 'package:esphome_display_editor/interpreter/variable_pass.dart';
 import 'package:esphome_display_editor/objects/display_object.dart';
@@ -46,9 +47,14 @@ import 'package:yaml/yaml.dart';
 
 /// Parses variables from the yaml map that can be configured by the user.
 Map<String, String> parseConfigurableVariables(YamlMap yaml) {
-  // Extract text_sensors, these are user configurable
+  final variableToSensor = parseSensors(yaml);
   final variableToTextSensor = parseTextSensors(yaml);
-  return variableToTextSensor;
+
+  final result = <String, String>{}
+    ..addAll(variableToSensor)
+    ..addAll(variableToTextSensor);
+
+  return result;
 }
 
 /// Parses the given [input] into a [YamlMap]
