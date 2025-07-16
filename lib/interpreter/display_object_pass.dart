@@ -2,6 +2,7 @@ import 'package:esphome_display_editor/interpreter/parsed_display_object.dart';
 import 'package:esphome_display_editor/objects/circle.dart';
 import 'package:esphome_display_editor/objects/display_object.dart';
 import 'package:esphome_display_editor/objects/display_object_types.dart';
+import 'package:esphome_display_editor/objects/horizontal_line.dart';
 import 'package:esphome_display_editor/objects/line.dart';
 import 'package:esphome_display_editor/objects/print.dart';
 import 'package:esphome_display_editor/objects/printf.dart';
@@ -34,6 +35,13 @@ class DisplayObjectPass {
           case DisplayObjectTypes.line:
             result.add(
               Line.fromParsedDisplayObject(
+                parsedDisplayObject,
+                variableToValueMapping,
+              ),
+            );
+          case DisplayObjectTypes.horizontalLine:
+            result.add(
+              HorizontalLine.fromParsedDisplayObject(
                 parsedDisplayObject,
                 variableToValueMapping,
               ),

@@ -3,6 +3,7 @@
 enum DisplayObjectTypes {
   circle,
   line,
+  horizontalLine,
   rectangle,
   triangle,
   print,

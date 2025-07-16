@@ -23,13 +23,14 @@ The current APIs that are implemented are:
 |API|Support|
 |---|---|
 |Line|Full|
+|HorizontalLine|Full|
 |Triangle|Full  |
 |Rectangle|Full   |
 |Circle|Full|
 |Text Sensors|Full|
 |Colors|Partially (Not all ways of defining color are tested)|
 |Print| Full|
-|Printf| Partially (Might be buggy with some input types right now)|
+|Printf| Basic (Should work for most inputs)|
 |Font| Barebones (Only uses Roboto font right now, sizing works however)|
 |Regular Polygon| Broken (Barebones are there, most of it does not work)|
 
@@ -51,7 +52,7 @@ To run the project you can use the following command:
 flutter run -d chrome
 ```
 
-To run various tests and analys also run in the pipeline:
+To run various tests and analysis also run in the pipeline:
 
 ```bash
 # Analyze the project on flaws
