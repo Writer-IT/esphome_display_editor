@@ -55,7 +55,7 @@ class Printf extends DisplayObject {
 
       /// Parsing actual variables and parsing all format variables after
       for (var i = 3; i < variables.length; i++) {
-        final variable = variables[i].toString().trim();
+        final variable = variables[i].toString();
         if (parsingFormatVariables || i > 7) {
           formatVariables.add(variable);
         } else {
@@ -102,6 +102,7 @@ class Printf extends DisplayObject {
             } else {
               stringBuffer.write(abstractVariable);
             }
+            // Doubles
           } else if ('f' == nextChar || '.' == nextChar) {
             var precisionString = '';
             if (nextChar == '.') {
