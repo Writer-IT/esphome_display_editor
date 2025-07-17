@@ -25,14 +25,17 @@ class HorizontalLine extends DisplayObject {
         );
       }
       x = parseNumValue(
-          valueObject: variables[0],
-          variableToValueMapping: variableToObjectMapping);
+        valueObject: variables[0],
+        variableToValueMapping: variableToObjectMapping,
+      );
       y = parseNumValue(
-          valueObject: variables[1],
-          variableToValueMapping: variableToObjectMapping);
+        valueObject: variables[1],
+        variableToValueMapping: variableToObjectMapping,
+      );
       width = parseNumValue(
-          valueObject: variables[2],
-          variableToValueMapping: variableToObjectMapping);
+        valueObject: variables[2],
+        variableToValueMapping: variableToObjectMapping,
+      );
       var color = Colors.black;
       if (variables.length == 4) {
         color = variables[3] as Color;
@@ -61,4 +64,3 @@ class HorizontalLine extends DisplayObject {
     canvas.drawLine(Offset(x, y), Offset(x + width, y), paint);
   }
 }
-
